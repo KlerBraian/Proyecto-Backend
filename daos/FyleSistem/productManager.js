@@ -18,6 +18,15 @@ class ProductManager {
 }
 
     addProducto = async nuevoProducto => {
+        // if (
+        //     !producto.title ||			
+        //     !producto.description||
+        //     !producto.price ||
+        //     !producto.code
+        //   ) {
+        //     return console.error("producto incompleto");
+        //   }
+
         const productos = await this.getProductos();
         if (productos.length === 0) {
             nuevoProducto.id = 1
@@ -25,7 +34,7 @@ class ProductManager {
             nuevoProducto.id = productos[productos.length - 1].id + 1
         }
         productos.push(nuevoProducto);
-        await fs.promises.writeFile(this.path, JSON.stringify(productos, null, 2), 'utf8');
+        await fs.promises.writeFile(this.path, JSON.stringify(productos, null, 2), 'utf-8');
     }
 
     getProductosById = async(id_producto) => {
