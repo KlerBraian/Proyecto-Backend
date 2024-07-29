@@ -9,7 +9,7 @@ const {getProductos, addProducto} = productService;
 router.get('/', async (req, res)=>{
     try {
         const productsDb = await getProductos()
-        res.send({status : "success" , data : productsDb,})
+        res.send({status : "success" , data : productsDb})
     } catch (error) {
         console.log (error)
     }
@@ -17,7 +17,7 @@ router.get('/', async (req, res)=>{
 
 router.post ("/" , async (req,res) => {
     try {
-        const {body} = req.body;
+        const {body} = req;
         const response = await addProducto(body);
         res.send ({status : "success", data : response})
     }

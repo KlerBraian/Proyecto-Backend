@@ -1,5 +1,5 @@
 const fs = require("fs");
-const path = "./product.json";
+const path = "./db/product.json";
 
 class ProductManager {
     constructor() {
@@ -8,13 +8,14 @@ class ProductManager {
     
     
     getProductos = async () => {
-        if (fs.existsSync(path)){
+        try{(fs.existsSync(path))
                 const result = await fs.promises.readFile(this.path, "utf-8");
                 const productos = JSON.parse(result);
                 return productos;
-            } 
+            } catch (error) {
                 return [];     
     }
+}
 
     addProducto = async nuevoProducto => {
         const productos = await this.getProductos();
