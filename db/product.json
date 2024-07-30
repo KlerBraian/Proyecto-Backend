@@ -1,11 +1,47 @@
 [
   {
+    "title": "prod 1",
+    "price": 14,
+    "description": "producto",
+    "stock": 5,
+    "category": "bajo",
+    "code": "Oh",
     "id": 1
   },
   {
-    "id": 2
+    "title": "prod 1",
+    "price": 14,
+    "description": "producto",
+    "stock": 5,
+    "category": "bajitoo",
+    "code": "Oh",
+    "id": 9
   },
   {
-    "id": 3
+    "title": "prod 15",
+    "price": 145543654,
+    "description": "producto",
+    "stock": 5,
+    "category": "rdfsgfsdgsfdg",
+    "code": "CSOdfsgfdgS",
+    "id": 10
+  },
+  {
+    "title": "prod 15",
+    "price": 145543654,
+    "description": "producto",
+    "stock": 5,
+    "category": "rdfsgfsdgsfdg",
+    "code": "CSOdfsgfdgS",
+    "id": 11
+  },
+  {
+    "title": "prod 15",
+    "price": 145543654,
+    "description": "producto",
+    "stock": 5,
+    "category": "rdfsgfsdgsfdg",
+    "code": "CSOdfsgfdgS",
+    "id": 12
   }
 ]

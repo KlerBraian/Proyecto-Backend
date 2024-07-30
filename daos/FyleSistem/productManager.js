@@ -18,29 +18,38 @@ class ProductManager {
 }
 
     addProducto = async nuevoProducto => {
-        // if (
-        //     !producto.title ||			
-        //     !producto.description||
-        //     !producto.price ||
-        //     !producto.code
-        //   ) {
-        //     return console.error("producto incompleto");
-        //   }
+        if (
+            !nuevoProducto.title ||			
+            !nuevoProducto.description||
+            !nuevoProducto.price ||
+            !nuevoProducto.code ||
+            !nuevoProducto.stock ||
+            !nuevoProducto.category
+          ) {
+            return console.log("producto incompleto");
+          }
 
-        const productos = await this.getProductos();
-        if (productos.length === 0) {
-            nuevoProducto.id = 1
-        } else {
-            nuevoProducto.id = productos[productos.length - 1].id + 1
+        try {
+            const productos = await this.getProductos();
+            if (productos.length === 0) {
+                nuevoProducto.id = 1;
+                nuevoProducto.status = true
+            } else {
+                nuevoProducto.id = productos[productos.length - 1].id + 1;
+            }
+            productos.push(nuevoProducto);
+            await fs.promises.writeFile(this.path, JSON.stringify(productos, null, 2), 'utf-8');
+        } catch (error) {
+            console.log(error);
         }
-        productos.push(nuevoProducto);
-        await fs.promises.writeFile(this.path, JSON.stringify(productos, null, 2), 'utf-8');
     }
 
     getProductosById = async(id_producto) => {
         try {
             const productos = await this.getProductos()
-            let producto = productos.find(producto => producto.id === id_producto)
+            console.log(productos)
+            console.log(id_producto)
+            let producto = productos.find(producto => Number(producto.id) === Number(id_producto));
             if (!producto) {
                 console.log("No existe el producto")
             }
@@ -53,13 +62,14 @@ class ProductManager {
 
     updateProducto = async(id_producto, nProducto) => {
         try {
-            const productos = await this.getProductos()
-            let producto = productos.findIndex(producto => producto.id === id_producto)
-            let productoModificado = { ...productos[producto], ...nProducto };
-
-
+            const productos = await this.getProductos();
+            let producto = productos.findIndex(producto => Number(producto.id) === Number(id_producto));
+            let productoAModificar = productos.find(producto => Number(producto.id) === Number(id_producto));
+            let productoModificado = { ...productos[producto], ...nProducto , id: productoAModificar.id };
             productos[producto] = productoModificado;
             await fs.promises.writeFile(this.path, JSON.stringify(productos, null, 2), 'utf8');
+            return `Producto con ID ${id_producto} modificado: ${JSON.stringify(productoAModificar)} 
+            Nuevo producto: ${JSON.stringify(productoModificado)}`
         } catch (error) {
             console.log("No se pudo modificar el producto")
         }
@@ -69,10 +79,11 @@ class ProductManager {
     deleteProducto = async(id_producto) => {
         try {
             const productos = await this.getProductos()
-            let indexProductoAEliminar = productos.findIndex(producto => producto.id === id_producto)
+            let indexProductoAEliminar = productos.findIndex(producto => Number(producto.id) === Number(id_producto));
+            let productoEliminado = productos.find(producto => Number(producto.id) === Number(id_producto));
             productos.splice(indexProductoAEliminar, 1);
             await fs.promises.writeFile(this.path, JSON.stringify(productos, null, 2), 'utf8');
-            return `Producto con ID ${id_producto} eliminado`;
+            return `Producto con ID ${id_producto} eliminado: ` + JSON.stringify(productoEliminado);
 
         } catch (error) {
             console.log("No se pudo eliminar el producto")
