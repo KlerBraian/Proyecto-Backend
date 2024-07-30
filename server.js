@@ -11,7 +11,7 @@ app.use(express.urlencoded({ extended: true }));
 
 
 app.use('/api/products', productRouter);
-app.use('api/carts', cartsRouter)
+app.use('/api/carts', cartsRouter)
 
 app.use((error, req, res, next) => { 
     console.log(error.stack) 

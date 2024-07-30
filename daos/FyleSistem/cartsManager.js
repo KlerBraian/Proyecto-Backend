@@ -16,18 +16,22 @@ class CartManager {
         }
     }
 
-    createCart = async (productos) => {
+    createCart = async (nuevoCarrito) => {
         try{
         const cart = await this.getCart();
+        let newId;
         if (cart.length === 0) {
-            newcart.id = 1
-            newcart.products = [{...productos}];
+            newId = 1
         }  else {
-            newcart.id = cart[cart.length - 1].id + 1
-            newcart.products = [...cart.products]
+            newId= cart[cart.length - 1].id + 1
+       
         }
 
-        cart.push(newcart);
+        const carrito = {
+            id: newId,
+            products: [{ ...nuevoCarrito }]
+        };
+        cart.push(carrito);
         await fs.promises.writeFile(this.path, JSON.stringify(cart, null, 2), 'utf-8');
         // { id : "" , products : [{prodId: 1, quantity : 1}] }
     } catch (error) {

@@ -2,11 +2,11 @@ const { Router } = require('express');
 const CartManager = require('../daos/FyleSistem/cartsManager');
 
 
-const router = Router()
+const routerCart = Router()
 const cartService = new CartManager();
 const { getCartByid, createCart } = cartService;
 
-router.get('/:cid', async (req, res)=>{
+routerCart.get('/:cid', async (req, res)=>{
     try {
         const { pid } = req.params
         const cartsDb = await getCartByid(pid)
@@ -17,7 +17,7 @@ router.get('/:cid', async (req, res)=>{
 })
 
 
-router.post ("/" , async (req,res) => {
+routerCart.post ("/" , async (req,res) => {
     try {
         const {body} = req
         const response = await createCart(body);
@@ -29,7 +29,7 @@ router.post ("/" , async (req,res) => {
 } )
 
 
-router.post ("/:cid/product/:pid" , async (req,res) => {
+routerCart.post ("/:cid/product/:pid" , async (req,res) => {
     try {
         const {cid} = req.params;
         const {pid} = req.params;
@@ -42,4 +42,4 @@ router.post ("/:cid/product/:pid" , async (req,res) => {
 } )
 
 
-module.exports = router
+module.exports = routerCart

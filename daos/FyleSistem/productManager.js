@@ -36,6 +36,7 @@ class ProductManager {
                 nuevoProducto.status = true
             } else {
                 nuevoProducto.id = productos[productos.length - 1].id + 1;
+                nuevoProducto.status = true
             }
             productos.push(nuevoProducto);
             await fs.promises.writeFile(this.path, JSON.stringify(productos, null, 2), 'utf-8');
