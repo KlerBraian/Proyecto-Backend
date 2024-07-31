@@ -23,17 +23,17 @@ class CartManager {
         if (cart.length === 0) {
             newId = 1
         }  else {
-            newId= cart[cart.length - 1].id + 1
+            newId= cart[cart.length - 1].idCart + 1
        
         }
 
         const carrito = {
-            id: newId,
-            products: [{ ...nuevoCarrito }]
+            idCart: newId,
+            products: nuevoCarrito
         };
         cart.push(carrito);
         await fs.promises.writeFile(this.path, JSON.stringify(cart, null, 2), 'utf-8');
-        // { id : "" , products : [{prodId: 1, quantity : 1}] }
+        return cart;
     } catch (error) {
         console.log(error);
     }
@@ -42,10 +42,11 @@ class CartManager {
 
     getCartById = async (id_cart)=> {
             try {
-                const carts = await this.getCart()
-                let cartId = carts.find(cart => Number(cart.id) === Number(id_cart));
+                const carts = await this.getCart();
+                let cartId = carts.find(cart => Number(cart.idCart) === Number(id_cart));
                 if (!cartId) {
-                    console.log("No existe el carrito")
+                    console.log("No existe el carrito");
+                    return `Carrito con id:${id_cart} no existe`;
                 }
                 return cartId;
             } catch (error) {
@@ -55,11 +56,24 @@ class CartManager {
     }
 
 
-    createProductToCart = async(product) => {
+    createProductToCart = async(id_carrito,id_producto,nProduct) => {
         try {
-            const cart = await this.getCartById()
-            cartNewProduct = {...cart, product}
-            cart.push(cartNewProduct)
+            const carts = await this.getCart();
+            const cart = await this.getCartById(id_carrito);
+            let productExists = false;
+            for (let i = 0; i < cart.products.length; i++) {
+                if (cart.products[i].prodId === Number(id_producto)) {
+                    cart.products[i].quant += nProduct;
+                    productExists = true;
+                    break;
+                }
+            }
+            if (!productExists) {
+                cart.products.push({ prodId: Number(id_producto), quant: nProduct });
+            } 
+            carts[id_carrito-1] = cart;
+            await fs.promises.writeFile(this.path, JSON.stringify(carts, null, 2), 'utf-8');
+            return carts;
         } catch (error) {
             console.log(error)
         }

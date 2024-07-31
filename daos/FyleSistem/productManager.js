@@ -26,7 +26,8 @@ class ProductManager {
             !nuevoProducto.stock ||
             !nuevoProducto.category
           ) {
-            return console.log("producto incompleto");
+            console.log("Producto incompleto")
+            return "Producto incompleto";
           }
 
         try {
@@ -48,11 +49,10 @@ class ProductManager {
     getProductosById = async(id_producto) => {
         try {
             const productos = await this.getProductos()
-            console.log(productos)
-            console.log(id_producto)
             let producto = productos.find(producto => Number(producto.id) === Number(id_producto));
             if (!producto) {
-                console.log("No existe el producto")
+                console.log("No existe el producto");
+                return "No existe el producto"
             }
             return producto;
         } catch (error) {
@@ -69,8 +69,10 @@ class ProductManager {
             let productoModificado = { ...productos[producto], ...nProducto , id: productoAModificar.id };
             productos[producto] = productoModificado;
             await fs.promises.writeFile(this.path, JSON.stringify(productos, null, 2), 'utf8');
+            console.log(`Producto con ID ${id_producto} modificado: ${JSON.stringify(productoAModificar)} 
+            Nuevo producto: ${JSON.stringify(productoModificado)}. Recuerda que el id siempre sera el mismo`)
             return `Producto con ID ${id_producto} modificado: ${JSON.stringify(productoAModificar)} 
-            Nuevo producto: ${JSON.stringify(productoModificado)}`
+            Nuevo producto: ${JSON.stringify(productoModificado)}. Recuerda que el id siempre sera el mismo`
         } catch (error) {
             console.log("No se pudo modificar el producto")
         }
