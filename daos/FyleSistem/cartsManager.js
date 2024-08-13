@@ -1,5 +1,10 @@
 const fs = require("fs");
 const path = "./db/carts.json"
+const ProductManager = require('./productManager');
+
+const productService = new ProductManager();
+const {getProductos} = productService;
+
 
 class CartManager {
     constructor() {
@@ -26,11 +31,13 @@ class CartManager {
             newId= cart[cart.length - 1].idCart + 1
        
         }
-
-        const carrito = {
-            idCart: newId,
-            products: nuevoCarrito
-        };
+        const productos = getProductos();
+        const carrito = {};
+        if(productos.id=== nuevoCarrito.prodId) {
+        carrito.idCart = newId;
+        carrito.products= nuevoCarrito
+        }
+        console.log(carrito)
         cart.push(carrito);
         await fs.promises.writeFile(this.path, JSON.stringify(cart, null, 2), 'utf-8');
         return cart;
