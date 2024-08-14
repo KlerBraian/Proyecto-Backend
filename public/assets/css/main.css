@@ -1,0 +1,82 @@
+.titulo {
+    text-align: center;
+}
+
+.list-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 2.5rem;
+    margin: 1rem
+}
+
+.producto {
+    text-align: center;
+    background-color: rgb(224, 176, 104);
+    padding: 1rem;
+    border-radius: 1rem;
+}
+
+.producto-price {
+    color: #64493f;
+    font-family: "Quattrocento Sans", sans-serif;
+    text-align: end;
+    font-weight: bold;
+    font-size: 20px;
+    margin-bottom: 1rem;
+    z-index: 2;
+}
+
+.producto-stock {
+    color: #64493f;
+    font-family: "Quattrocento Sans", sans-serif;
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+    margin-bottom: 1rem;
+    z-index: 2;
+}
+
+.producto-categoria {
+    color: #64493f;
+    font-size: 0.85rem;
+    font-family: "Open Sans", sans-serif;
+    flex: 1;
+    text-align: center;
+    z-index: 2;
+}
+
+.boton-agregar {
+    font-family: "Quattrocento Sans", sans-serif;
+    border: 0;
+    background-color: #003148;
+    padding: 0.30rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    border-radius: 0.3rem;
+    cursor: pointer;
+    border: 2px solid #ffffff;
+    z-index: 2;
+}
+
+
+.producto-title {
+    color: #64493f;
+    font-family: "Quattrocento Sans", sans-serif;
+    text-align: center;
+    z-index: 2;
+}
+
+.producto-description {
+    color: #64493f;
+    font-size: 0.85rem;
+    font-family: "Open Sans", sans-serif;
+    flex: 1;
+    text-align: center;
+    z-index: 2;
+}
+
+.form{
+    display: flex;
+    justify-content: center;
+    gap: 1rem
+}

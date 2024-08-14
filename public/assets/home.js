@@ -7,7 +7,7 @@ fetch('/db/product.json')
     let div = document.createElement('div');
     div.classList.add('producto');
     div.innerHTML = `
-    <div class="detalle-productos">
+    <div class="productos-grilla">
         <h3 class="producto-title">${producto.title}</h3>
         <p class="producto-price">$${producto.price}</p>
         <p class="producto-categoria">Categoria: ${producto.category}</p>

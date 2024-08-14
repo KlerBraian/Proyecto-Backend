@@ -10,6 +10,7 @@ let inputCategoria = document.querySelector("#category");
 let button = document.querySelector("#submit");
 let inputs = document.querySelectorAll(".productbox");
 
+
 // Obtener productos iniciales
 fetch('/db/product.json')
     .then(response => response.json())
@@ -17,6 +18,18 @@ fetch('/db/product.json')
 
 // Función para agregar un producto
 function agregarProducto() {
+    if (
+        !inputTitle.value ||			
+        !inputPrice.value||
+        !inputCode.value ||
+        !inputDescription.value ||
+        !inputStock.value ||
+        !inputCategoria.value
+      ) {
+        Swal.fire("Debe rellenar todos los campos")
+        return
+      }
+
     const producto = {
         title: inputTitle.value,
         price: inputPrice.value,
@@ -41,6 +54,7 @@ button.addEventListener("click", (event) => {
     agregarProducto();
 });
 
+
 // Manejar la recepción de productos
 socket.on("productosCargados", (data) => {
     listContainer.innerHTML = ''; // Limpiar el contenedor
@@ -61,6 +75,7 @@ socket.on("productosCargados", (data) => {
     });
 });
 
+
 // Manejar la recepción de nuevos productos
 socket.on("nuevoProductoCargado", (data) => {
     listContainer.innerHTML = ''; // Limpiar el contenedor
@@ -68,7 +83,7 @@ socket.on("nuevoProductoCargado", (data) => {
         let div = document.createElement('div');
         div.classList.add('producto');
         div.innerHTML = `
-        <div class="detalle-productos">
+        <div class="productos-grilla">
             <h3 class="producto-title">${producto.title}</h3>
             <p class="producto-price">$${producto.price}</p>
             <p class="producto-categoria">${producto.category}</p>
