@@ -1,22 +1,25 @@
+                        //CONFIGURACION DE RUTAS DE VIEWS
+
+//LLAMADO DE ARCHIVOS, METODOS Y FUNCIONES A UTILIZAR
 const { Router } = require('express');
+const ProductManager = require('../daos/FyleSistem/productManager');
 const router = Router()
 
 
-router.get("/" , (req, res) => {
-    try {
-        res.render("home")
-    }
-    catch(error) {
-        console.log(error)
-    }
+//CONFIGURACION DEL GET PARA RENDERIZAR EL VIEW HOME
+
+router.get("/", async (req, res) => {
+        const {getProductos} = new ProductManager;
+        const products = await getProductos()
+            res.render("home",{products})
+    
 })
 
-router.get('/realtimeproducts', (req, res)=>{
-    try {
-        res.render ("realTimeProducts")
-    } catch (error) {
-        console.log (error)
-    }
+//CONFIGURACION DEL GET PARA RENDERIZAR EL SOCKET REALTIMEPRODUCTS
+
+router.get('/realtimeproducts', (req, res) => {
+
+    res.render("realTimeProducts",{})
 })
 
 module.exports = router

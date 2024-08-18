@@ -1,14 +1,19 @@
-const express       = require('express');
+                    //CONFIGURACION PRINCIPAL DEL SERVER
+
+//LLAMADO A FUNCIONES,ARCHIVOS Y METODOS A UTILIZAR
+const express = require('express');
 const productRouter = require('./routes/productRouter.js');
-const cartsRouter   = require('./routes/cartsRouter.js');
-const realtimeproducts    = require('./routes/viewsRouter.js');
-const handlebars    = require('express-handlebars')
-const {Server} = require ("socket.io");
+const cartsRouter = require('./routes/cartsRouter.js');
+const realtimeproducts = require('./routes/viewsRouter.js');
+const handlebars = require('express-handlebars')
+const { Server } = require("socket.io");
+const ProductManager = require('./daos/FyleSistem/productManager.js');
 
-
+//CREACION DE LA APP CON EXPRESS Y CONFIGURACION DEL PUERTO
 const app = express();
-const PORT = process.env.PORT ||  8080
+const PORT = process.env.PORT || 8080
 
+//LLAMADO A METODOS DE EXPRESS PARA URL,JSON Y CARPETAS
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'))
@@ -21,37 +26,36 @@ app.set('views', __dirname + '/views')
 // extención de las plantillas
 app.set('view engine', 'handlebars');
 
+//LLAMADO A LAS RUTAS PARA PODER UTILIZARLAS
 app.use('/', realtimeproducts);
 app.use('/api/products', productRouter);
 app.use('/api/carts', cartsRouter)
 
-app.use((error, req, res, next) => { 
-    console.log(error.stack) 
-    res.status(500).send('error de server') 
+//CONFIGURACION DE LA MUESTRA DE ERRORES DEL SERVIDOR
+app.use((error, req, res, next) => {
+    console.log(error.stack)
+    res.status(500).send('error de server')
 });
 
+//CREACION DE LA ESCUCHA AL SERVIDOR
 const httpServer = app.listen(PORT, () => {
-    console.log('escuchando en el puerto: ', PORT)})
-   
-   
-const io = new Server(httpServer)
-let productos = []; // Inicializar como un array vacío
+    console.log('escuchando en el puerto: ', PORT)
+})
 
-io.on('connection', socket => {
-    console.log('Nuevo cliente conectado');
+//CREACION DEL SERVER TIPO SOCKET
+const io = new Server(httpServer);
 
-    // Enviar productos al nuevo cliente
-    socket.emit('productosCargados', productos);
+//CREAMOS LA FUNCION PARA USAR EL SOCKET
+const productSocket = async (io) => {
+    io.on ("connection" , async socket => {
+        const {getProductos, addProducto} = new ProductManager();
+        const products = await getProductos();
+        socket.emit("products", products); //enviamos la lista de productos al cliente
+        socket.on('productoNuevo',async data => {  //recibimos el nuevo producto y lo agregamos
+            await addProducto(data)
+        });
+    })
 
-    // Manejar nuevos productos desde el cliente
-    socket.on('productosBD', data => {
-        productos = [...data];
-        io.emit('productosCargados', productos);
-    });
+}
 
-    // Manejar la adición de un nuevo producto
-    socket.on('productoNuevo', data => {
-        productos.push(data);
-        io.emit('nuevoProductoCargado', productos);
-    });
-});
+productSocket(io)

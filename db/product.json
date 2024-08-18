@@ -1,0 +1,86 @@
+[
+  {
+    "title": "prod 1",
+    "price": 14,
+    "description": "producto",
+    "stock": 5,
+    "category": "bajo",
+    "code": "Oh",
+    "id": 2,
+    "status": true
+  },
+  {
+    "title": "prod 2",
+    "price": 1500,
+    "description": "producto",
+    "stock": 10,
+    "category": "bajo",
+    "code": "Oh",
+    "id": 3,
+    "status": true
+  },
+  {
+    "title": "prod 2",
+    "price": 1500,
+    "description": "producto",
+    "stock": 10,
+    "category": "bajo",
+    "code": "Oh",
+    "id": 4,
+    "status": true
+  },
+  {
+    "title": "producto 3",
+    "price": 150,
+    "description": " asasdfsdf",
+    "code": "DEAS",
+    "stock": 4,
+    "category": "wiiiii",
+    "id": 5,
+    "status": true
+  },
+  {
+    "title": "ewrf",
+    "image": "efwrg",
+    "price": 2,
+    "code": "rtg",
+    "description": "ewrg",
+    "stock": 2,
+    "category": "ewrg",
+    "id": 6,
+    "status": true
+  },
+  {
+    "title": "wg",
+    "image": "wreg",
+    "price": 2,
+    "code": "wreg",
+    "description": "rweg",
+    "stock": 2,
+    "category": "rewg",
+    "id": 7,
+    "status": true
+  },
+  {
+    "title": "prod 15",
+    "image": "sdaf",
+    "price": 2,
+    "code": "dfsa",
+    "description": "asdf",
+    "stock": 2,
+    "category": "sadfsdaf",
+    "id": 8,
+    "status": true
+  },
+  {
+    "title": "fdsg",
+    "image": "sdfg",
+    "price": 3,
+    "code": "sdfg",
+    "description": "dfsg",
+    "stock": 2,
+    "category": "sdfg",
+    "id": 9,
+    "status": true
+  }
+]

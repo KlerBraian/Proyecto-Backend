@@ -1,8 +1,11 @@
+                            /*ESTILOS DE LOS VIEWS*/
+
+
 .titulo {
     text-align: center;
 }
 
-.list-container {
+.productos-grilla{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 2.5rem;

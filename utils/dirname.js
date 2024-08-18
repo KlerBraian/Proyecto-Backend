@@ -1,3 +1,5 @@
+//CONFIGURACION PARA UTILIZAR EL METODO DIRNAME CON IMPORT
+
 import { fileURLToPath } from 'node:os'
 import { dirname } from 'node:path'
 
