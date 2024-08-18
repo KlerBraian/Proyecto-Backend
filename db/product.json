@@ -38,49 +38,5 @@
     "category": "wiiiii",
     "id": 5,
     "status": true
-  },
-  {
-    "title": "ewrf",
-    "image": "efwrg",
-    "price": 2,
-    "code": "rtg",
-    "description": "ewrg",
-    "stock": 2,
-    "category": "ewrg",
-    "id": 6,
-    "status": true
-  },
-  {
-    "title": "wg",
-    "image": "wreg",
-    "price": 2,
-    "code": "wreg",
-    "description": "rweg",
-    "stock": 2,
-    "category": "rewg",
-    "id": 7,
-    "status": true
-  },
-  {
-    "title": "prod 15",
-    "image": "sdaf",
-    "price": 2,
-    "code": "dfsa",
-    "description": "asdf",
-    "stock": 2,
-    "category": "sadfsdaf",
-    "id": 8,
-    "status": true
-  },
-  {
-    "title": "fdsg",
-    "image": "sdfg",
-    "price": 3,
-    "code": "sdfg",
-    "description": "dfsg",
-    "stock": 2,
-    "category": "sdfg",
-    "id": 9,
-    "status": true
   }
 ]
