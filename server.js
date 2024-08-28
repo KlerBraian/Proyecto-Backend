@@ -2,12 +2,11 @@
 
 //LLAMADO A FUNCIONES,ARCHIVOS Y METODOS A UTILIZAR
 const express = require('express');
-const productRouter = require('./routes/productRouter.js');
-const cartsRouter = require('./routes/cartsRouter.js');
-const realtimeproducts = require('./routes/viewsRouter.js');
+const appRouter = require('./routes/index.js')
 const handlebars = require('express-handlebars')
 const { Server } = require("socket.io");
 const ProductManager = require('./daos/FyleSistem/productManager.js');
+const { connectDb } = require('./config/index.js');
 
 //CREACION DE LA APP CON EXPRESS Y CONFIGURACION DEL PUERTO
 const app = express();
@@ -26,11 +25,10 @@ app.set('views', __dirname + '/views')
 // extención de las plantillas
 app.set('view engine', 'handlebars');
 
-//LLAMADO A LAS RUTAS PARA PODER UTILIZARLAS
-app.use('/', realtimeproducts);
-app.use('/api/products', productRouter);
-app.use('/api/carts', cartsRouter)
+connectDb()
 
+//LLAMADO A LAS RUTAS PARA PODER UTILIZARLAS
+app.use(appRouter)
 //CONFIGURACION DE LA MUESTRA DE ERRORES DEL SERVIDOR
 app.use((error, req, res, next) => {
     console.log(error.stack)

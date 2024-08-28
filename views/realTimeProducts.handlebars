@@ -19,6 +19,8 @@
 <script>
     
 const socket = io();  //INSTANCIAMOS SOCKET
+
+//Recibimos los productos y los mostramos 
 socket.on ("products", data => {
     const listContainer = document.querySelector("#list-container");
     listContainer.innerHTML = ""; 
@@ -76,10 +78,8 @@ function agregarProducto() {
         category: inputCategoria.value
     };
     limpiarInputs();
-    socket.emit("productoNuevo", producto);
+    socket.emit("productoNuevo", producto); //EMITIMOS EL NUEVO PRODUCTO AL SERVIDOR
 }
-
-
 
 //funcion para limpiar los inputs
 
@@ -88,7 +88,6 @@ function limpiarInputs() {
         input.value = '';
     });
 }
-
 
 // Manejar el clic en el botón para agregar el producto
 

@@ -2,18 +2,25 @@
 
 //LLAMADO DE ARCHIVOS, METODOS Y FUNCIONES A UTILIZAR
 const { Router } = require('express');
-const ProductManager = require('../daos/FyleSistem/productManager');
+const { ProductManagerMongo } = require('../Mongo/productDao.mongo');
 const router = Router()
-
+const productServiceMongo = new ProductManagerMongo()
 
 //CONFIGURACION DEL GET PARA RENDERIZAR EL VIEW HOME
 
 router.get("/", async (req, res) => {
-        const {getProductos} = new ProductManager;
-        const products = await getProductos()
-            res.render("home",{products})
-    
-})
+    try {
+        // Asegúrate de que .lean() se aplica a la consulta de Mongoose
+        const products = await productServiceMongo.getProducts()
+        console.log(products); // Verifica que los productos se obtienen correctamente en formato plano
+
+        res.render("home", { products });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("Error al obtener los productos");
+    }
+});
+
 
 //CONFIGURACION DEL GET PARA RENDERIZAR EL SOCKET REALTIMEPRODUCTS
 
