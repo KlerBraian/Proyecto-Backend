@@ -27,8 +27,9 @@ routerCart.get('/', async (req, res) => {
 routerCart.get('/:cid', async (req, res) => {
     try {
         const { cid } = req.params
-        const cartsDb = await cartServiceMongo.getCart({_id: cid})
-        res.send({ status: "success", data: cartsDb })
+        const cartDb = await cartServiceMongo.getCart({_id: cid})
+        console.log(cartDb)
+        res.send({ status: "success", data: cartDb })
     } catch (error) {
         console.log(error)
     }
@@ -56,10 +57,25 @@ routerCart.post("/", async (req, res) => {
 routerCart.put("/:cid/product/:pid", async (req, res) => {
     try {
         const { cid, pid } = req.params;
-        const { body } = req
+        const { quantity } = req.body
         const cart = await cartServiceMongo.getCart({_id: cid});
-        cart.products.push({product: pid, body})
-        const response = await cartServiceMongo.updateProductCart({_id: cid}, cart);
+        console.log(cart)
+        console.log(pid)
+        let productExists = false;
+        for (let i = 0; i < cart.products.length; i++) {
+            console.log(cart.products[i].product.toString())
+            if (cart.products[i].product === pid) {
+                cart.products[i].quantity += quantity;
+                productExists = true;
+                break;
+            }
+        }
+        if (!productExists) {
+            cart.products.push({product : pid, quantity: quantity });
+        }
+        console.log(cart)
+        const nCart = cart
+        const response = await cartServiceMongo.updateProductCart({_id: cid, nCart});
         res.send({ status: "success", data: response })
     }
     catch (error) {
