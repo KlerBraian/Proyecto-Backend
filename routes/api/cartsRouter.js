@@ -2,7 +2,7 @@
 
                         
 //LLAMADO DE ARCHIVOS, METODOS Y FUNCIONES A UTILIZAR
-const { Router } = require('express');
+const { Router, json } = require('express');
 const CartManager = require('../../daos/FyleSistem/cartsManager');
 const { CartManagerMongo } = require('../../Mongo/cartsDao.mongo');
 const routerCart = Router()
@@ -13,8 +13,9 @@ const cartServiceMongo = new CartManagerMongo()
 
 routerCart.get('/', async (req, res) => {
     try {
-        const cartDb = await cartServiceMongo.getCarts()
-        res.send({ status: "success", data: cartDb })
+        const cartsDb = await cartServiceMongo.getCarts()
+        console.log(JSON.stringify(cartsDb, null, 2))
+        res.send({ status: "success", payload: cartsDb })
     } catch (error) {
         console.log(error)
     }
@@ -27,9 +28,9 @@ routerCart.get('/', async (req, res) => {
 routerCart.get('/:cid', async (req, res) => {
     try {
         const { cid } = req.params
-        const cartDb = await cartServiceMongo.getCart({_id: cid})
-        console.log(cartDb)
-        res.send({ status: "success", data: cartDb })
+        const cartDb = await cartServiceMongo.getCart(cid)
+        console.log(JSON.stringify(cartDb, null, 2))
+        res.send({ status: "success", payload: cartDb })
     } catch (error) {
         console.log(error)
     }
@@ -54,28 +55,26 @@ routerCart.post("/", async (req, res) => {
 
 //CONFIGURACION DEL POST POR CARRITO Y PRODUCTO CON SU ID
 
+routerCart.put ("/:cid", async(req,res) => {
+try{
+    const {cid} = req.params;
+    const {body} = req
+    const carritoModificado = await cartServiceMongo.updateCart(cid, body)
+    res.send({status: "success", carritoModificado})
+
+}  catch (error) {
+    console.log(error)
+}
+})
+
+
+
+
 routerCart.put("/:cid/product/:pid", async (req, res) => {
     try {
         const { cid, pid } = req.params;
         const { quantity } = req.body
-        const cart = await cartServiceMongo.getCart({_id: cid});
-        console.log(cart)
-        console.log(pid)
-        let productExists = false;
-        for (let i = 0; i < cart.products.length; i++) {
-            console.log(cart.products[i].product.toString())
-            if (cart.products[i].product === pid) {
-                cart.products[i].quantity += quantity;
-                productExists = true;
-                break;
-            }
-        }
-        if (!productExists) {
-            cart.products.push({product : pid, quantity: quantity });
-        }
-        console.log(cart)
-        const nCart = cart
-        const response = await cartServiceMongo.updateProductCart({_id: cid, nCart});
+        const response = await cartServiceMongo.updateProductCart(cid, pid, quantity);
         res.send({ status: "success", data: response })
     }
     catch (error) {
@@ -83,16 +82,26 @@ routerCart.put("/:cid/product/:pid", async (req, res) => {
     }
 })
 
-routerCart.delete('/:pid', async (req, res) => {
+routerCart.delete('/:cid', async (req, res) => {
     try {
-        const { pid } = req.params
-        const producto = await cartServiceMongo.deleteCart({_id: pid})
-        res.send(producto)
+        const { cid } = req.params
+        const carritoEliminado = await cartServiceMongo.deleteCart(cid)
+        res.send(carritoEliminado)
     } catch (error) {
         console.log(error)
     }
 })
 
+routerCart.delete('/:cid/product/:pid', async (req, res) => {
+    try {
+        const { cid, pid } = req.params
+        const productoEliminado = await cartServiceMongo.deleteProduct(cid, pid)
+        console.log(productoEliminado)
+        res.send({status: "success", productoEliminado})
+    } catch (error) {
+        console.log(error)
+    }
+})
 
 
 module.exports = routerCart
