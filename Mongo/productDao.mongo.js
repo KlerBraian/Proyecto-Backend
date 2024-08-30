@@ -9,7 +9,7 @@ class ProductManagerMongo  {
     getProduct    = async opts => await this.model.findOne(opts).lean()
     createProduct = async newProduct => await this.model.create(newProduct)
     deleteProduct = async opts => await this.model.deleteOne(opts)
-    updateProduct = async opts => await this.model.updateOne(opts, element)
+    updateProduct = async (opts, element) => await this.model.findById(opts, element)
 }
 
 module.exports = {

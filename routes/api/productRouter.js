@@ -54,7 +54,7 @@ router.put('/:pid', async (req, res) => {
     try {
         const { pid } = req.params
         const { body } = req;
-        const response = await productServiceMongo.updateProduct(pid, body)
+        const response = await productServiceMongo.updateProduct({_id: pid}, body)
         res.send(response)
     } catch (error) {
         console.log(error)
@@ -66,7 +66,7 @@ router.put('/:pid', async (req, res) => {
 router.delete('/:pid', async (req, res) => {
     try {
         const { pid } = req.params
-        const producto = await productServiceMongo.deleteProduct(pid)
+        const producto = await productServiceMongo.deleteProduct({_id: pid})
         res.send(producto)
     } catch (error) {
         console.log(error)

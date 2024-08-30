@@ -10,10 +10,7 @@ const productServiceMongo = new ProductManagerMongo()
 
 router.get("/", async (req, res) => {
     try {
-        // Asegúrate de que .lean() se aplica a la consulta de Mongoose
         const products = await productServiceMongo.getProducts()
-        console.log(products); // Verifica que los productos se obtienen correctamente en formato plano
-
         res.render("home", { products });
     } catch (error) {
         console.log(error);

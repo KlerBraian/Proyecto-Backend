@@ -5,30 +5,33 @@ class ProductManager {
     constructor() {
         this.path = path;
     }
-    
-    
+
+    //funcion para obtener los productos del archivo products.json
+
     getProductos = async () => {
-        try{(fs.existsSync(path))
-                const result = await fs.promises.readFile(this.path, "utf-8");
-                const productos = JSON.parse(result);
-                return productos;
-            } catch (error) {
-                return [];     
+        try {
+            (fs.existsSync(path))
+            const result = await fs.promises.readFile(this.path, "utf-8");
+            const productos = JSON.parse(result);
+            return productos;
+        } catch (error) {
+            return [];
+        }
     }
-}
+    //funcion para agregar un producto a la lista de productos del json verificando que no falte ningun campo y asignadole ID
 
     addProducto = async nuevoProducto => {
         if (
-            !nuevoProducto.title ||			
-            !nuevoProducto.description||
+            !nuevoProducto.title ||
+            !nuevoProducto.description ||
             !nuevoProducto.price ||
             !nuevoProducto.code ||
             !nuevoProducto.stock ||
             !nuevoProducto.category
-          ) {
+        ) {
             console.log("Producto incompleto")
             return "Producto incompleto";
-          }
+        }
 
         try {
             const productos = await this.getProductos();
@@ -46,7 +49,10 @@ class ProductManager {
         }
     }
 
-    getProductosById = async(id_producto) => {
+
+    //funcion para obtener un producto a traves de su ID
+
+    getProductosById = async (id_producto) => {
         try {
             const productos = await this.getProductos()
             let producto = productos.find(producto => Number(producto.id) === Number(id_producto));
@@ -61,12 +67,15 @@ class ProductManager {
         }
     }
 
-    updateProducto = async(id_producto, nProducto) => {
+
+    //funcion para actualizar un producto sin alterar su ID en el product.json
+
+    updateProducto = async (id_producto, nProducto) => {
         try {
             const productos = await this.getProductos();
             let producto = productos.findIndex(producto => Number(producto.id) === Number(id_producto));
             let productoAModificar = productos.find(producto => Number(producto.id) === Number(id_producto));
-            let productoModificado = { ...productos[producto], ...nProducto , id: productoAModificar.id };
+            let productoModificado = { ...productos[producto], ...nProducto, id: productoAModificar.id };
             productos[producto] = productoModificado;
             await fs.promises.writeFile(this.path, JSON.stringify(productos, null, 2), 'utf8');
             console.log(`Producto con ID ${id_producto} modificado: ${JSON.stringify(productoAModificar)} 
@@ -76,10 +85,13 @@ class ProductManager {
         } catch (error) {
             console.log("No se pudo modificar el producto")
         }
-
     }
 
-    deleteProducto = async(id_producto) => {
+
+
+    //funcion para borrar un producto del archivo json
+
+    deleteProducto = async (id_producto) => {
         try {
             const productos = await this.getProductos()
             let indexProductoAEliminar = productos.findIndex(producto => Number(producto.id) === Number(id_producto));
@@ -93,7 +105,7 @@ class ProductManager {
         }
     }
 
- }
+}
 
 module.exports = ProductManager;
 
