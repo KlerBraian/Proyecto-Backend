@@ -12,54 +12,11 @@ const cartServiceMongo = new CartManagerMongo()
 router.get("/", async (req, res) => {
     try {
         const products = await productServiceMongo.getProducts()
-        const cart = await cartServiceMongo.createCart({ products: [] })
-
-        const { limit = 10, page = 1, query = "", sort } = req.query;
-        const limitInt = parseInt(limit);
-        const pageInt = parseInt(page);
-        let filter = {};
-
-        if (query) {
-            filter = { ...filter, type: query };  
-        }
-
-        let productsDb = await productServiceMongo.getProducts(filter);
-
-
-        if (sort === "asc") {
-            productsDb = productsDb.sort((a, b) => a.price - b.price);
-        } else if (sort === "desc") {
-            productsDb = productsDb.sort((a, b) => b.price - a.price);
-        }
-
-        const totalProducts = productsDb.length;
-        const totalPages = Math.ceil(totalProducts / limitInt);
-        const startIndex = (pageInt - 1) * limitInt;
-        const endIndex = pageInt * limitInt;
-        const paginatedProducts = productsDb.slice(startIndex, endIndex);
-
-        const hasPrevPage = pageInt > 1;
-        const hasNextPage = pageInt < totalPages;
-        const prevPage = hasPrevPage ? pageInt - 1 : null;
-        const nextPage = hasNextPage ? pageInt + 1 : null;
-
-        const prevLink = hasPrevPage ? `/products?limit=${limitInt}&page=${prevPage}&query=${query}&sort=${sort}` : null;
-        const nextLink = hasNextPage ? `/products?limit=${limitInt}&page=${nextPage}&query=${query}&sort=${sort}` : null;
-
-        res.render("home", {
-            products,
-            cartId: cart._id,
+        const cartId = await cartServiceMongo.getCart()
+        res.render("home", {   products, cartiId : cartId,
             status: "success",
-            payload: paginatedProducts,
-            totalPages: totalPages,
-            prevPage: prevPage,
-            nextPage: nextPage,
-            page: pageInt,
-            hasPrevPage: hasPrevPage,
-            hasNextPage: hasNextPage,
-            prevLink: prevLink,
-            nextLink: nextLink
         });
+
     } catch (error) {
         console.log(error);
         res.status(500).send("Error al obtener los productos");
@@ -77,11 +34,11 @@ router.get("/products/:pid", async (req, res) => {
     }
 });
 
-router.get("/carts/:cid", async (req, res) => {
+router.get("/api/carts/:cid", async (req, res) => {
     try {
         const { cid } = req.params
         const cart = await cartServiceMongo.getCart(cid)
-        console.log(cart)
+        console.log(cart.products)
         res.render("cart", { products: cart.products });
     } catch (error) {
         console.log(error);

@@ -13,9 +13,26 @@ class CartManagerMongo  {
     updateCart = async (opts,nProducts) => await this.model.findByIdAndUpdate({_id : opts}, {$set: {products: nProducts.products}}, {new:true});
 
 
-    updateProductCart = async (opts, pid, nCant) => await this.model.updateOne({_id: opts}, {$set: {products: {product: pid , quantity: nCant}}}, { new: true })
-}
+    updateProductCart =  async (cartId, productId,quantity) =>{
 
+    const cart = await this.model.findOne({ _id: cartId, "products.product": productId });
+
+    if (cart) {
+        return await this.model.updateOne(
+            { _id: cartId, "products.product": productId },
+            { $inc: { "products.$.quantity": quantity } }, 
+            { new: true }
+        );
+    } else {
+
+        return await this.model.updateOne(
+            { _id: cartId },
+            { $push: { products: { product: productId, quantity: quantity } } },
+            { new: true }
+        );
+    }
+    }
+}
 module.exports = {
     CartManagerMongo
 }

@@ -1,13 +1,26 @@
 {{!-- //ESTRUCTURA DEL VIEW DETALLES --}}
 <main>
     <h1 class="titulo" id="titulo">Detalles del producto {{title}}</h1>
+    <a href="/">Volver</a>
     <div class="producto">
         <h3 class="producto-title">{{product.title}}</h3>
-        <img src={{product.product-thumbail}} alt="">
+        <img src={{product.thumbnail}}>
         <p class="producto-price">${{product.price}}</p>
         <p class="producto-categoria">Categoria: {{product.category}}</p>
         <p class="producto-description">{{product.description}}</p>
         <p class="producto-stock">Unidades disponibles: {{product.stock}}</p>
-        <button class="boton-agregar" id={{product._id}}>Agregar al carrito</button>
+<form action="/api/carts" method="POST" class="agregar-al-carrito-form">
+    <!-- Campo oculto para el ID del producto -->
+    <input type="hidden" name="product" value="{{product._id}}">
+    
+    <!-- Campo de entrada para la cantidad -->
+    <label for="quantity">Cantidad:</label>
+    <input type="number" name="quantity" id="quantity" min="1" value="1" required>
+    
+    <!-- Botón para enviar el formulario -->
+    <button type="submit" class="boton-agregar">Agregar al carrito</button>
+</form>
+
+
     </div>
 </main>

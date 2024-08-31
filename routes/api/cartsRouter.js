@@ -29,7 +29,6 @@ routerCart.get('/:cid', async (req, res) => {
     try {
         const { cid } = req.params
         const cartDb = await cartServiceMongo.getCart(cid)
-        console.log(JSON.stringify(cartDb, null, 2))
         res.send({ status: "success", payload: cartDb })
     } catch (error) {
         console.log(error)
@@ -42,8 +41,12 @@ routerCart.get('/:cid', async (req, res) => {
 
 routerCart.post("/", async (req, res) => {
     try {
-        const { body } = req
-        const response = await cartServiceMongo.createCart(body);
+        const {body} = req
+        const newCart = {
+            products: body || []
+        };
+        const response = await cartServiceMongo.createCart(newCart);
+        console.log(body)
         res.send({ status: "success", data: response })
     }
     catch (error) {
@@ -66,8 +69,6 @@ try{
     console.log(error)
 }
 })
-
-
 
 
 routerCart.put("/:cid/product/:pid", async (req, res) => {
