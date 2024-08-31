@@ -2,6 +2,7 @@
 
 <main>
     <h1 class="titulo" id="titulo">Bienvenidos a home</h1>
+    <a href="/api/carts/{{cartId}}">Ir al carrito</a>
     <div class="productos-grilla">
     {{#each products}}
     <div class="producto">
@@ -11,7 +12,11 @@
         <p class="producto-categoria">Categoria: {{category}}</p>
         <p class="producto-description">{{description}}</p>
         <p class="producto-stock">Unidades disponibles: {{stock}}</p>
-        <button class="boton-agregar" id={{id}}>Agregar al carrito</button>
+        <a href="/products/{{_id}}" class="producto-detalles">Ver detalles</a>
+          <form action="/api/carts/{{cartId}}" method="POST" class="agregar-al-carrito-form">
+                <input type="hidden" name="productId" value="{{_id}}">
+                <button type="submit" class="boton-agregar">Agregar al carrito</button>
+            </form>
     </div>
     {{/each}}
       </div>

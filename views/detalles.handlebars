@@ -1,0 +1,13 @@
+{{!-- //ESTRUCTURA DEL VIEW DETALLES --}}
+<main>
+    <h1 class="titulo" id="titulo">Detalles del producto {{title}}</h1>
+    <div class="producto">
+        <h3 class="producto-title">{{product.title}}</h3>
+        <img src={{product.product-thumbail}} alt="">
+        <p class="producto-price">${{product.price}}</p>
+        <p class="producto-categoria">Categoria: {{product.category}}</p>
+        <p class="producto-description">{{product.description}}</p>
+        <p class="producto-stock">Unidades disponibles: {{product.stock}}</p>
+        <button class="boton-agregar" id={{product._id}}>Agregar al carrito</button>
+    </div>
+</main>
