@@ -1,0 +1,90 @@
+<main>
+    <h1 class="titulo" id="titulo">Carrito de Compras</h1>
+    <a href="/">Volver</a>
+
+    {{#if products.length}}
+    <div class="productos-cart">
+        {{#each products}}
+        <div class="producto">
+            <h3 class="producto-title">{{product.title}}</h3>
+            <img src="{{product.thumbnail}}" alt="">
+            <p class="producto-price">${{product.price}}</p>
+            <p class="producto-categoria">Categoría: {{product.category}}</p>
+            <p class="producto-description">{{product.description}}</p>
+            <p class="producto-cantidad">Cantidad: {{quantity}}</p>
+            <p class="producto-subtotal">Subtotal: ${{subtotal}}</p> <!-- Mostrar subtotal de cada producto -->
+            <h1>{{cartId}}</h1>
+            <form class="eliminar-carrito" onsubmit="updateProductQuantity(event, '{{product._id}}', '{{../cartId}}')">
+                <input type="number" name="quantity" min="1" value="1" />
+                <!-- Botón para actualizar la cantidad -->
+                <button type="submit">Modificar Carrito</button>
+            </form>
+            <button onclick="deleteProduct('{{../cartId}}', '{{product._id}}')">Eliminar producto</button>
+        </div>
+        {{/each}}
+
+        <div class="total-carrito">
+            <p>Total del carrito: ${{subtotalTotal}}</p> <!-- Mostrar subtotal total -->
+        </div>
+        <button onclick="emptyCart('{{cartId}}')">Vaciar Carrito</button>
+    </div>
+    {{else}}
+    <p>No hay productos en el carrito.</p>
+    {{/if}}
+</main>
+<script>
+
+
+    function updateProductQuantity(event, productId, cartId) {
+        event.preventDefault(); // Previene el envío del formulario tradicional
+
+        // Accede al formulario desde event.target
+        const form = event.target;
+        const quantity = form.quantity.value; // Obtén la nueva cantidad del input
+        fetch(`/api/carts/${cartId}/product/${productId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ quantity: parseInt(quantity) })
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Cantidad actualizada:", data);
+                // Acá puedes actualizar el DOM para reflejar la nueva cantidad
+                location.reload(); // Recargar la página para reflejar los cambios
+            })
+            .catch(error => console.error("Error:", error));
+    }
+
+
+    function deleteProduct(cartId, productId) {
+          fetch(`${cartId}/product/${productId}`, {
+            method: "DELETE"
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Producto eliminado:", data);
+                // Acá puedes actualizar el DOM para reflejar que el carrito está vacío
+                location.reload(); // Recargar la página para reflejar los cambios
+            })
+            .catch(error => console.error("Error:", error));
+
+    }
+
+    // Función para vaciar el carrito
+    function emptyCart(id_cart) {
+        console.log("ID del carrito:", id_cart);
+
+        fetch(`/api/carts/${id_cart}`, {
+            method: "DELETE"
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Carrito vaciado:", data);
+                // Acá puedes actualizar el DOM para reflejar que el carrito está vacío
+                location.reload(); // Recargar la página para reflejar los cambios
+            })
+            .catch(error => console.error("Error:", error));
+    }
+</script>

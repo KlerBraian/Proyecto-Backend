@@ -1,0 +1,55 @@
+[
+  {
+    "idCart": 1,
+    "products": [
+      {
+        "prodID": 1,
+        "quant": 1
+      }
+    ]
+  },
+  {
+    "idCart": 2,
+    "products": [
+      {
+        "prodID": 4,
+        "quant": 20
+      }
+    ]
+  },
+  {
+    "idCart": 3,
+    "products": [
+      {
+        "prodID": 4,
+        "quant": 20
+      },
+      {
+        "prodID": 3,
+        "quant": 20
+      }
+    ]
+  },
+  {
+    "idCart": 4,
+    "products": [
+      {
+        "prodID": 4,
+        "quant": 20
+      },
+      {
+        "prodID": 1,
+        "quant": 20
+      }
+    ]
+  },
+  {
+    "idCart": 5,
+    "products": [
+      {
+        "prodID": 25,
+        "quant": 20
+      }
+    ]
+  }
+]
