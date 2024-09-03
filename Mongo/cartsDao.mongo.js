@@ -10,6 +10,8 @@ class CartManagerMongo  {
     createCart = async newCart => await this.model.create(newCart)
     deleteCart = async opts => await this.model.findByIdAndUpdate({_id: opts}, { $set: { products: [] } }, { new: true }).lean();
     deleteProduct = async (opts,pid) => await this.model.updateOne({_id: opts}, {$pull: {products: {product:pid}}});
+
+    
     updateCart = async (opts,nProducts) => await this.model.findByIdAndUpdate({_id : opts}, {$set: {products: nProducts.products}}, {new:true});
 
 
@@ -20,7 +22,7 @@ class CartManagerMongo  {
     if (cart) {
         return await this.model.updateOne(
             { _id: cartId, "products.product": productId },
-            { $inc: { "products.$.quantity": quantity } }, 
+            { $set: { "products.$.quantity": quantity } }, 
             { new: true }
         );
     } else {
