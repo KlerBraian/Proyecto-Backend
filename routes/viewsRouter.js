@@ -97,4 +97,8 @@ router.get('/realtimeproducts', (req, res) => {
     res.render("realTimeProducts", {})
 })
 
+router.get('/createProducts', (req, res) => {
+
+    res.render("createProducts", {})
+})
 module.exports = router

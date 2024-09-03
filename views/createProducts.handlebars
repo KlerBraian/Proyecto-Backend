@@ -1,0 +1,82 @@
+<h1 class="titulo" id="titulo">Bienvenidos al portal del vendedor</h1>
+
+    <a href="/">Volver</a>
+<form class="crear-producto" onsubmit="agregarProducto(event)">
+    <input type="text" id="title" class="productbox" placeholder="Titulo" required>
+    <input type="text" id="thumbnail" class="productbox" placeholder="Ingrese url de la imagen" required>
+    <input type="text" id="description" class="productbox" placeholder="Descripcion" required>
+    <input type="text" id="category" class="productbox" placeholder="Categoria" required>
+    <input type="text" id="code" class="productbox" placeholder="Codigo" required>
+    <input type="number" id="price" class="productbox" placeholder="Precio" min="0" required>
+    <input type="number" id="stock" class="productbox" placeholder="Stock" min="0" required>
+    <button type="submit">Enviar</button>
+</form>
+<div class="productos-grilla" id="list-container"></div>
+
+<script src=" https://cdn.jsdelivr.net/npm/sweetalert2@11.7.1/dist/sweetalert2.all.min.js "></script>
+<script>
+// SELECCIONAMOS LOS INPUTS A UTILIZAR
+let listContainer = document.querySelector("#list-container");
+let inputTitle = document.querySelector("#title");
+let inputPrice = document.querySelector("#price");
+let inputCode = document.querySelector("#code");
+let inputDescription = document.querySelector("#description");
+let inputStock = document.querySelector("#stock");
+let inputCategoria = document.querySelector("#category");
+let inputImage = document.querySelector("#thumbnail");
+let inputs = document.querySelectorAll(".productbox");
+
+// Función para agregar un producto y enviarlo al servidor por una solicitud POST verificando que no falte ningún campo
+function agregarProducto(event) {
+    event.preventDefault(); // Previene el envío del formulario tradicional
+
+    if (
+        !inputTitle.value ||
+        !inputPrice.value ||
+        !inputCode.value ||
+        !inputDescription.value ||
+        !inputStock.value ||
+        !inputCategoria.value ||
+        !inputImage.value
+    ) {
+        Swal.fire("Debe rellenar todos los campos");
+        return;
+    }
+
+    const producto = {
+        title: inputTitle.value,
+        thumbnail: inputImage.value,
+        price: Number(inputPrice.value),
+        code: inputCode.value,
+        description: inputDescription.value,
+        stock: Number(inputStock.value),
+        category: inputCategoria.value
+    };
+
+    // Enviar el producto al servidor vía POST
+    fetch('/api/products', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(producto)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Producto guardado en la base de datos:', data);
+        Swal.fire("Producto agregado con éxito");
+        limpiarInputs(); // Limpiar los campos después de agregar el producto
+    })
+    .catch(error => {
+        console.error('Error al guardar el producto:', error);
+        Swal.fire("Error al agregar el producto");
+    });
+}
+
+// Función para limpiar los inputs
+function limpiarInputs() {
+    inputs.forEach(input => {
+        input.value = '';
+    });
+}
+</script>
