@@ -1,6 +1,6 @@
-                        //CONFIGURACION DE RUTAS DEL CARRITO
+//CONFIGURACION DE RUTAS DEL CARRITO
 
-                        
+
 //LLAMADO DE ARCHIVOS, METODOS Y FUNCIONES A UTILIZAR
 const { Router, json } = require('express');
 const CartManager = require('../../daos/FyleSistem/cartsManager');
@@ -67,16 +67,16 @@ routerCart.post("/", async (req, res) => {
 
 //CONFIGURACION DEL POST POR CARRITO Y PRODUCTO CON SU ID
 
-routerCart.put ("/:cid", async(req,res) => {
-try{
-    const {cid} = req.params;
-    const {body} = req
-    const carritoModificado = await cartServiceMongo.updateCart(cid, body)
-    res.send({status: "success", carritoModificado,})
+routerCart.put("/:cid", async (req, res) => {
+    try {
+        const { cid } = req.params;
+        const { body } = req
+        const carritoModificado = await cartServiceMongo.updateCart(cid, body)
+        res.send({ status: "success", carritoModificado, })
 
-}  catch (error) {
-    console.log(error)
-}
+    } catch (error) {
+        console.log(error)
+    }
 })
 
 
@@ -107,7 +107,7 @@ routerCart.delete('/:cid/product/:pid', async (req, res) => {
         const { cid, pid } = req.params
         const productoEliminado = await cartServiceMongo.deleteProduct(cid, pid)
         console.log(productoEliminado)
-        res.send({status: "success", productoEliminado})
+        res.send({ status: "success", productoEliminado })
     } catch (error) {
         console.log(error)
     }

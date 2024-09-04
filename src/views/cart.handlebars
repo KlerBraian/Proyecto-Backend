@@ -1,7 +1,8 @@
 <main>
     <h1 class="titulo" id="titulo">Carrito de Compras</h1>
-    <a href="/">Volver</a>
-
+    <button class="options return">
+        <a href="/">Volver</a>
+    </button>
     {{#if products.length}}
     <div class="productos-cart">
         {{#each products}}
@@ -11,27 +12,31 @@
             <p class="producto-price">${{product.price}}</p>
             <p class="producto-categoria">Categoría: {{product.category}}</p>
             <p class="producto-description">{{product.description}}</p>
-            <p class="producto-cantidad">Cantidad: {{quantity}}</p>
-            <p class="producto-subtotal">Subtotal: ${{subtotal}}</p> <!-- Mostrar subtotal de cada producto -->
+            <p class="producto-description">Cantidad: {{quantity}}</p>
+            <p class="producto-description">Subtotal: ${{subtotal}}</p> <!-- Mostrar subtotal de cada producto -->
             <h1>{{cartId}}</h1>
             <form class="eliminar-carrito" onsubmit="updateProductQuantity(event, '{{product._id}}', '{{../cartId}}')">
+                <label for="quantity">Cantidad a modificar:</label>
                 <input type="number" name="quantity" min="1" value="1" />
                 <!-- Botón para actualizar la cantidad -->
-                <button type="submit">Modificar Carrito</button>
+                <button class="modify" type="submit">Modificar Carrito</button>
             </form>
-            <button onclick="deleteProduct('{{../cartId}}', '{{product._id}}')">Eliminar producto</button>
+            <button class="delete" onclick="deleteProduct('{{../cartId}}', '{{product._id}}')">Eliminar
+                producto</button>
         </div>
         {{/each}}
 
         <div class="total-carrito">
             <p>Total del carrito: ${{subtotalTotal}}</p> <!-- Mostrar subtotal total -->
         </div>
-        <button onclick="emptyCart('{{cartId}}')">Vaciar Carrito</button>
+        <div class="pages "> <button class="vaciar" onclick="emptyCart('{{cartId}}')">Vaciar Carrito</button></div>
+
     </div>
     {{else}}
     <p>No hay productos en el carrito.</p>
     {{/if}}
 </main>
+<script src=" https://cdn.jsdelivr.net/npm/sweetalert2@11.7.1/dist/sweetalert2.all.min.js "></script>
 <script>
 
 
@@ -51,22 +56,26 @@
             .then(response => response.json())
             .then(data => {
                 console.log("Cantidad actualizada:", data);
-                // Acá puedes actualizar el DOM para reflejar la nueva cantidad
-                location.reload(); // Recargar la página para reflejar los cambios
+                Swal.fire("Producto modificado con éxito");
+                setTimeout(() => {
+                    location.reload(); // Recargar la página después de 2 segundos
+                }, 1000); // 2000 milisegundos = 2 segundos
             })
             .catch(error => console.error("Error:", error));
     }
 
 
     function deleteProduct(cartId, productId) {
-          fetch(`${cartId}/product/${productId}`, {
+        fetch(`${cartId}/product/${productId}`, {
             method: "DELETE"
         })
             .then(response => response.json())
             .then(data => {
                 console.log("Producto eliminado:", data);
-                // Acá puedes actualizar el DOM para reflejar que el carrito está vacío
-                location.reload(); // Recargar la página para reflejar los cambios
+                Swal.fire("Producto eliminado con éxito");
+                setTimeout(() => {
+                    location.reload(); // Recargar la página después de 2 segundos
+                }, 1000); // 2000 milisegundos = 2 segundos
             })
             .catch(error => console.error("Error:", error));
 
@@ -82,8 +91,10 @@
             .then(response => response.json())
             .then(data => {
                 console.log("Carrito vaciado:", data);
-                // Acá puedes actualizar el DOM para reflejar que el carrito está vacío
-                location.reload(); // Recargar la página para reflejar los cambios
+                Swal.fire("Carrito vaciado con éxito");
+                setTimeout(() => {
+                    location.reload(); // Recargar la página después de 2 segundos
+                }, 1000); // 2000 milisegundos = 2 segundos
             })
             .catch(error => console.error("Error:", error));
     }

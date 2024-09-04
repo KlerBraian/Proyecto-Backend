@@ -1,33 +1,33 @@
-            {{!-- ESTRUCTURA DEL VIEW SOCKET REALTIMEPRODUCTS --}}
+{{!-- ESTRUCTURA DEL VIEW SOCKET REALTIMEPRODUCTS --}}
 
-    <h1 class="titulo" id="titulo">Bienvenidos a home socket</h1>
-    <form class="form" action="">
-    <input type="text"id="title" class="productbox" placeholder="Titulo" >
+<h1 class="titulo" id="titulo">Bienvenidos a home socket</h1>
+<form class="form" action="">
+    <input type="text" id="title" class="productbox" placeholder="Titulo">
     <input type="text" id="thumbnail" class="productbox" placeholder="Ingrese url de la imagen">
-    <input type="text"id="description" class="productbox" placeholder="Descripcion">
-    <input type="text"id="category" class="productbox" placeholder="Categoria" >
-    <input type="text"id="code" class="productbox" placeholder="Codigo" >
-    <input type="number"id="price" class="productbox" placeholder="Precio" >
-    <input type="number"id="stock" class="productbox" placeholder="Stock" >
+    <input type="text" id="description" class="productbox" placeholder="Descripcion">
+    <input type="text" id="category" class="productbox" placeholder="Categoria">
+    <input type="text" id="code" class="productbox" placeholder="Codigo">
+    <input type="number" id="price" class="productbox" placeholder="Precio">
+    <input type="number" id="stock" class="productbox" placeholder="Stock">
     <button id="submit">Enviar</button>
-    </form>
-    <div class="productos-grilla" id="list-container">
-    </div>
+</form>
+<div class="productos-grilla" id="list-container">
+</div>
 
 <script src=" https://cdn.jsdelivr.net/npm/sweetalert2@11.7.1/dist/sweetalert2.all.min.js "></script>
 <script src="/socket.io/socket.io.js"></script>
 <script>
-    
-const socket = io();  //INSTANCIAMOS SOCKET
 
-//Recibimos los productos y los mostramos 
-socket.on ("products", data => {
-    const listContainer = document.querySelector("#list-container");
-    listContainer.innerHTML = ""; 
-    data.forEach(producto => {
-        let div = document.createElement('div');
-        div.classList.add('producto');
-        div.innerHTML = `
+    const socket = io();  //INSTANCIAMOS SOCKET
+
+    //Recibimos los productos y los mostramos 
+    socket.on("products", data => {
+        const listContainer = document.querySelector("#list-container");
+        listContainer.innerHTML = "";
+        data.forEach(producto => {
+            let div = document.createElement('div');
+            div.classList.add('producto');
+            div.innerHTML = `
             <h3 class="producto-title">${producto.title}</h3>
             <img src=${producto.img}>
             <p class="producto-price">$${producto.price}</p>
@@ -36,64 +36,64 @@ socket.on ("products", data => {
             <p class="producto-stock">${producto.stock}</p>
             <button class="boton-agregar" id="${producto.id}">Agregar al carrito</button>
         `;
-        listContainer.append(div);
+            listContainer.append(div);
+        });
     });
-});
 
 
-//SELECCIONAMOS LOS INPUTS A UTILIZAR
-let listContainer = document.querySelector("#list-container");
-let inputTitle = document.querySelector("#title");
-let inputPrice = document.querySelector("#price");
-let inputCode = document.querySelector("#code");
-let inputDescription = document.querySelector("#description");
-let inputStock = document.querySelector("#stock");
-let inputCategoria = document.querySelector("#category");
-let inputImage= document.querySelector("#thumbnail");
-let button = document.querySelector("#submit");
-let inputs = document.querySelectorAll(".productbox");
+    //SELECCIONAMOS LOS INPUTS A UTILIZAR
+    let listContainer = document.querySelector("#list-container");
+    let inputTitle = document.querySelector("#title");
+    let inputPrice = document.querySelector("#price");
+    let inputCode = document.querySelector("#code");
+    let inputDescription = document.querySelector("#description");
+    let inputStock = document.querySelector("#stock");
+    let inputCategoria = document.querySelector("#category");
+    let inputImage = document.querySelector("#thumbnail");
+    let button = document.querySelector("#submit");
+    let inputs = document.querySelectorAll(".productbox");
 
-// Función para agregar un producto y enviarlos al servidor por socket verificando que no falte ningun campo
+    // Función para agregar un producto y enviarlos al servidor por socket verificando que no falte ningun campo
 
-function agregarProducto() {
-    if (
-        !inputTitle.value ||
-        !inputPrice.value ||
-        !inputCode.value ||
-        !inputDescription.value ||
-        !inputStock.value ||
-        !inputCategoria.value
-    ) {
-        Swal.fire("Debe rellenar todos los campos")
-        return
+    function agregarProducto() {
+        if (
+            !inputTitle.value ||
+            !inputPrice.value ||
+            !inputCode.value ||
+            !inputDescription.value ||
+            !inputStock.value ||
+            !inputCategoria.value
+        ) {
+            Swal.fire("Debe rellenar todos los campos")
+            return
+        }
+
+        const producto = {
+            title: inputTitle.value,
+            image: inputImage.value,
+            price: Number(inputPrice.value),
+            code: inputCode.value,
+            description: inputDescription.value,
+            stock: Number(inputStock.value),
+            category: inputCategoria.value
+        };
+        limpiarInputs();
+        socket.emit("productoNuevo", producto); //EMITIMOS EL NUEVO PRODUCTO AL SERVIDOR
     }
 
-    const producto = {
-        title: inputTitle.value,
-        image: inputImage.value,
-        price: Number(inputPrice.value),
-        code: inputCode.value,
-        description: inputDescription.value,
-        stock: Number(inputStock.value),
-        category: inputCategoria.value
-    };
-    limpiarInputs();
-    socket.emit("productoNuevo", producto); //EMITIMOS EL NUEVO PRODUCTO AL SERVIDOR
-}
+    //funcion para limpiar los inputs
 
-//funcion para limpiar los inputs
+    function limpiarInputs() {
+        inputs.forEach(input => {
+            input.value = '';
+        });
+    }
 
-function limpiarInputs() {
-    inputs.forEach(input => {
-        input.value = '';
+    // Manejar el clic en el botón para agregar el producto
+
+    button.addEventListener("click", (event) => {
+        event.preventDefault(); // Evitar el envío del formulario default
+        agregarProducto();
     });
-}
-
-// Manejar el clic en el botón para agregar el producto
-
-button.addEventListener("click", (event) => {
-    event.preventDefault(); // Evitar el envío del formulario default
-    agregarProducto();
-});
 
 </script>

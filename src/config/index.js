@@ -1,4 +1,4 @@
-const {connect} = require ("mongoose");
+const { connect } = require("mongoose");
 
 exports.connectDb = async () => {
     console.log("Base de datos conectada");

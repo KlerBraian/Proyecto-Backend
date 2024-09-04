@@ -1,40 +1,52 @@
 {{!-- //ESTRUCTURA DEL VIEW HOME --}}
 
+<h1 class="titulo">Tienda Kler Backend</h1>
+<h2 class="titulo">Productos</h2>
 
-    <h1>Productos</h1>
-    <a href="/createProducts">Portal vendedor</a>
-    {{#if cartId }}
-    <a href="/api/carts/{{cartId}}">Ir al carrito</a>
+<div class="options"><button class="create-products">
+<a href="/createProducts">Portal vendedor</a>
+</button>
+
+{{#if cartId }}
+<button class="cart">
+<a href="/api/carts/{{cartId}}">Carrito 🛒</a>
+</button>
+{{/if}}</div>
+<div class="container">
+{{#if products.length}}
+<div class="productos-grilla">
+    {{#each products}}
+    <div class="producto">
+        <h3 class="producto-title">{{this.title}}</h3>
+        <img class="producto-img" src="{{this.thumbnail}}" alt="">
+        <p class="producto-price">Precio: ${{this.price}}</p>
+        <p class="producto-categoria">Categoría: {{this.category}}</p>
+        <p class="producto-description">Descripción: {{this.description}}</p>
+        <p class="producto-stock">Unidades disponibles: {{stock}}</p>
+        <button class="options detail">    <a href="/products/{{_id}}" class="producto-detalles">Ver detalles</a></button>
+    
+    </div>
+    {{/each}}
+</div>
+
+<!-- Paginación -->
+<div class="pagination">
+    {{#if hasPrevPage}}
+    <button class="options pages">    <a class="prev" href="/?limit={{limit}}&page={{prevPage}}&query={{query}}&sort={{sort}}">Página Anterior</a>
+</button>
     {{/if}}
-    {{#if products.length}}
-        <div class="productos-grilla">
-            {{#each products}}
-                <div class="producto">
-                    <h3 class="producto-title">{{this.title}}</h3>
-                    <img src="{{this.thumbnail}}" alt="">
-                    <p class="producto-price">Precio: ${{this.price}}</p>
-                    <p class="producto-categoria">Categoría: {{this.category}}</p>
-                    <p class="producto-description">Descripción: {{this.description}}</p>
-                      <p class="producto-stock">Unidades disponibles: {{stock}}</p>
-        <a href="/products/{{_id}}" class="producto-detalles">Ver detalles</a>   
-                </div>
-            {{/each}}
-        </div>
 
-        <!-- Paginación -->
-        <div class="pagination">
-            {{#if hasPrevPage}}
-                <a href="/?limit={{limit}}&page={{prevPage}}&query={{query}}&sort={{sort}}">Página Anterior</a>
-            {{/if}}
-            
-            {{#if hasNextPage}}
-                <a href="/?limit={{limit}}&page={{nextPage}}&query={{query}}&sort={{sort}}">Página Siguiente</a>
-            {{/if}}
-
-            <p>Página {{currentPage}} de {{totalPages}}</p>
-        </div>
-    {{else}}
-        <p>No hay productos disponibles.</p>
+    {{#if hasNextPage}}
+    <button class="options pages">    
+        <a class="next" href="/?limit={{limit}}&page={{nextPage}}&query={{query}}&sort={{sort}}">Página Siguiente</a>
+</button>
     {{/if}}
+    <p class="page">Página {{currentPage}} de {{totalPages}}</p>
+</div>
+{{else}}
+<p>No hay productos disponibles.</p>
+{{/if}}
+</div>
 </body>
+
 </html>

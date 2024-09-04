@@ -4,37 +4,37 @@ const productsCollection = "products";
 
 const productSchema = new Schema({
     title: {
-        type: String, 
+        type: String,
         required: true,
         index: true
     },
     price: {
-        type: Number, 
+        type: Number,
         required: true
     },
     stock: {
-        type: Number, 
+        type: Number,
         required: true
     },
     category: {
-        type: String, 
+        type: String,
         required: true
     },
     description: {
-        type: String, 
+        type: String,
         required: true
     },
     code: {
-        type: String, 
+        type: String,
         required: true,
         index: true,
         unique: true
     },
     thumbnail: {
-        type: String 
+        type: String
     },
     create: {
-        type: Date, 
+        type: Date,
         default: Date.now
     }
 });
