@@ -12,7 +12,7 @@ const cartServiceMongo = new CartManagerMongo()
 
 router.get("/", async (req, res) => {
     try {
-        let cart = await cartServiceMongo.getCarts(); 
+        let cart = await cartServiceMongo.getCarts();
         let cartId;
 
         if (cart.length !== 0) {
@@ -23,7 +23,7 @@ router.get("/", async (req, res) => {
         const { limit = 10, page = 1, query = "", sort } = req.query;
         const limitInt = parseInt(limit);
         const pageInt = parseInt(page);
-        
+
         // Filtro de búsqueda (ajustar según sea necesario)
         let filter = {};
         if (query) {
