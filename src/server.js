@@ -7,6 +7,8 @@ const handlebars = require('express-handlebars')
 const { Server } = require("socket.io");
 const ProductManager = require('./daos/FyleSistem/productManager.js');
 const { connectDb } = require('./config/index.js');
+const cookie = require ('cookie-parser')
+
 
 //CREACION DE LA APP CON EXPRESS Y CONFIGURACION DEL PUERTO
 const app = express();
@@ -17,7 +19,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'))
 app.use(express.static(__dirname + '/db'));
-
+app.use(cookie())
 // configuración del motor de plantillas
 app.engine('handlebars', handlebars.engine())
 // configurar la carpeta donde debe tomar las plantillas
