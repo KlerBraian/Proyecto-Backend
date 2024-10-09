@@ -1,5 +1,7 @@
 const {Schema, model} = require ("mongoose");
 
+const userCollection = 'users'
+
 const userSchema = new Schema({
     first_name : String,
     
@@ -28,7 +30,7 @@ const userSchema = new Schema({
 }
 )
 
-const userModel = model('users', userSchema)
+const userModel = model(userCollection, userSchema)
 
 module.exports = {
     userModel
