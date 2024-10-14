@@ -1,0 +1,1 @@
+const githubPassport = require('passport-github2')

@@ -197,5 +197,18 @@
                             }
 
                             .link {
-                                color: #000;
+                                margin: 1rem;
+                                display: inline-block;
+                                background-color: #003148;
+                                color: #ffffff;
+                                border-radius: 0.3rem;
+                            }
+
+                            .form-register{
+                                margin: 1rem;
+                            }
+
+                            .submit {
+                                padding: 0.3rem;
+                                border-radius: 0.3rem;
                             }

@@ -18,5 +18,6 @@ const authTokenMiddleware = (req, res, next) => {
 
 module.exports = {
     generateToken,
-    authTokenMiddleware
+    authTokenMiddleware,
+    PRIVATE_KEY
 }

@@ -7,7 +7,11 @@ const handlebars = require('express-handlebars')
 const { Server } = require("socket.io");
 const ProductManager = require('./daos/FyleSistem/productManager.js');
 const { connectDb } = require('./config/index.js');
-const cookieParser = require('cookie-parser')
+const cookieParser = require('cookie-parser');
+const passport = require('passport');
+const MongoStore = require('connect-mongo')
+const { initializePassport } = require('./passport/passport.config.js');
+const session      = require('express-session')
 
 
 //CREACION DE LA APP CON EXPRESS Y CONFIGURACION DEL PUERTO
@@ -20,6 +24,21 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'))
 app.use(express.static(__dirname + '/db'));
 app.use(cookieParser('palabrasecreta'))
+// Configuración de express-session
+app.use(session({
+    store: MongoStore.create({
+        mongoUrl: "mongodb+srv://braiankler30:A0oYf2hBA8XxOuT5@clustercoder.qfkuo.mongodb.net/products?retryWrites=true&w=majority&appName=ClusterCoder/",
+        ttl: 100000
+    }),
+    secret: 'secretcoder',
+    resave: true,
+    saveUninitialized: true
+}));
+
+// Inicializar Passport después de session
+initializePassport();
+app.use(passport.initialize());
+app.use(passport.session());
 // configuración del motor de plantillas
 app.engine('handlebars', handlebars.engine())
 // configurar la carpeta donde debe tomar las plantillas
