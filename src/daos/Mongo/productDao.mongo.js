@@ -1,12 +1,12 @@
 const { productModel } = require("../models/productsModel")
 
 
-class ProductManagerMongo {
+class ProductDaoMongo {
     constructor() {
         this.model = productModel
     }
     // Función para obtener productos con filtrado, ordenamiento y paginación
-    getProducts = async (filter = {}, limit = 10, page = 1, sort = 'asc') => {
+    get = async (filter = {}, limit = 10, page = 1, sort = 'asc') => {
         // Ajustar los parámetros de paginación
         const skip = (page - 1) * limit;
         const sortOrder = sort === 'desc' ? -1 : 1;
@@ -33,12 +33,12 @@ class ProductManagerMongo {
         };
     };
 
-    getProduct = async opts => await this.model.findOne({ _id: opts }).lean()
-    createProduct = async newProduct => await this.model.create(newProduct)
-    deleteProduct = async opts => await this.model.deleteOne(opts)
-    updateProduct = async (opts, element) => await this.model.findById(opts, element)
+    getBy = async opts => await this.model.findOne({ _id: opts }).lean()
+    create = async newProduct => await this.model.create(newProduct)
+    delete = async opts => await this.model.deleteOne(opts)
+    update = async (opts, element) => await this.model.findById(opts, element)
 }
 
 module.exports = {
-    ProductManagerMongo
+    ProductDaoMongo
 }
