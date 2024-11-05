@@ -1,4 +1,4 @@
-const { cartModel } = require("../models/cartsModel")
+const { cartModel } = require("../Mongo/models/cartsModel")
 
 
 class CartDaoMongo {

@@ -1,10 +1,9 @@
 const { Router } = require('express')
 const passport = require('passport')
-const UserDaoMongo = require('../../daos/Mongo/userDao.mongo')
 const { generateToken } = require('../../utils/jwt')
 
 const router = Router()
-const userServise = new UserDaoMongo()
+
 
 
 router.get('/failregister', async (req, res) => {

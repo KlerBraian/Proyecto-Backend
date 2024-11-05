@@ -1,4 +1,4 @@
-const {userModel} = require("./models/userModel")
+const { userModel } = require("../Mongo/models/userModel")
 
 class UserDaoMongo {
     constructor() {
@@ -6,26 +6,13 @@ class UserDaoMongo {
     }
 
 
-async get () {
-    return await this.model.find({})
+   get   = async () => await this.model.find({});
+   getBy = async opts => await this.model.findOne({_id: opts}).lean;
+   create = async newUser => await this.model.create(newUser);
+   update = async (opts, elements) => await this.model.findOneAndUpdate(opts, elements);
+   delete = async opts => await this.model.deleteOne(opts);
 }
 
-async getBy(filter){
-    return await this.model.findOne(filter)
+module.exports = {
+    UserDaoMongo
 }
-
-async create(newUser){
-    return await  this.model.create(newUser)
-}
-
-async update(uid){
-    return await this.model.findOneAndUpdate(uid)
-}
-
-async delete(uid) {
-    return await this.model.findOneAndDelete(uid)
-}
-
-}
-
-module.exports = UserDaoMongo

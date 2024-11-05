@@ -2,14 +2,14 @@ const { userService } = require("../service")
 
 class UserController {
  constructor () {
-    this.userService = userService
+    this.service = userService
  }    
  
 
 
 getUsers = async (req, res) => {
     try {
-        const users = await userService.get()
+        const users = await this.service.getUsers()
 
         res.send({
             status: 'success',
@@ -22,8 +22,9 @@ getUsers = async (req, res) => {
 
 getUser = async (req, res) => {
     const { id } = req.params
-    const user = await userService.getBy(id)
-    res.send('users',user)
+    const user = await this.service.getUser(id)
+    res.send({status: "success",
+              payload: user})
 }
 
 createUser =  async (req, res) => {
@@ -31,7 +32,7 @@ createUser =  async (req, res) => {
     if (!first_name || !email || !password)
         return res.status(400).send({ status: success, message: "faltan ingresar datos" })
 
-    const userFound = await userService.getBy({ email });
+    const userFound = await this.service.getUser({ email });
     if (userFound)
         return res.status(401).send({
             status: error,
@@ -45,7 +46,7 @@ createUser =  async (req, res) => {
         password: createHash(password)
     }
 
-    let result = await userService.create(newUser)
+    let result = await this.service.createUser(newUser)
     res.send({
         status: succes,
         data: result,
@@ -54,11 +55,24 @@ createUser =  async (req, res) => {
 }
 
 updateUser =  async (req, res) => {
-    res.send('users')
+    try {
+        const { uid } = req.params
+        const { body } = req;
+        const response = await this.service.updateUser({ _id: uid }, body)
+        res.send(response)
+    } catch (error) {
+        console.log(error)
+    }
 }
 
-deleteUser = async (req, res) => {
-    res.send('users')
+deleteUser =  async (req, res) => {
+    try {
+        const { uid } = req.params
+        const user = await this.service.deleteUser({ _id: uid })
+        res.send(user)
+    } catch (error) {
+        console.log(error)
+    }
 }
 }
 
