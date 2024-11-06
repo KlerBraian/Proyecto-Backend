@@ -20,12 +20,14 @@ const userSchema = new Schema({
         required: true,
     },
    
-    cartId: String,
-    
+    cartId: {
+        type: Schema.Types.ObjectId,
+        ref: 'carts'  // Aquí estamos haciendo la referencia al modelo de carrito
+    },
     role: {
         type: String,
         enum: ['user', 'user_premium', 'admin'],
-        default: 'admin'
+        default: 'user'
     }
 }
 )

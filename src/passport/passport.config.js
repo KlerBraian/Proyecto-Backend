@@ -4,11 +4,13 @@ const { createHash, isValidPassword } = require('../utils/validatePassword')
 const jwt = require ("passport-jwt")
 const { PRIVATE_KEY } = require ('../utils/jwt')
 const { UserDaoMongo } = require('../daos/Mongo/userDao.mongo')
+const { CartDaoMongo } = require('../daos/Mongo/cartsDao.mongo')
 const JWTStrategy = jwt.Strategy
 const ExtractJWT = jwt.ExtractJwt
 const LocalStrategy = passportLocal.Strategy
 
 const userMongo = new UserDaoMongo()
+const cartMongo = new CartDaoMongo()
 
 const initializePassport = () => {
 
@@ -70,6 +72,14 @@ const initializePassport = () => {
             if (!user) return done(null, false)
 
             if(!isValidPassword(password, user.password)) return done(null, false)
+          
+
+            if (!user.cartId) {
+                const newCart = await cartMongo.create();
+                user.cartId = newCart._id;
+                await user.save()
+            }
+            
             return done(null, user)
         } catch (error) {
             return done(error)

@@ -8,8 +8,6 @@ class ViewsController {
  
 getPage =  async (req, res) => {
     try {
-        const isAdmin = req.user.role === "admin"
-        console.log(isAdmin)
         const isLoggedIn = req.cookies.token; // Dependiendo de cómo manejes la autenticación
         let cartId = null;
 
@@ -48,7 +46,6 @@ getPage =  async (req, res) => {
     
         // Renderizar la vista con los productos
         res.render("home", {
-            isAdmin,
             cartId,
             products: products,
             totalPages: totalPages,

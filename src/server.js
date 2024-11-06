@@ -6,7 +6,7 @@ const appRouter = require('./routes/index.js')
 const handlebars = require('express-handlebars')
 const { Server } = require("socket.io");
 const ProductManager = require('./daos/FyleSistem/productManager.js');
-const { connectDb } = require('./config/index.js');
+const { connectDb, configObjet } = require('./config/index.js');
 const cookieParser = require('cookie-parser');
 const passport = require('passport');
 const MongoStore = require('connect-mongo')
@@ -16,7 +16,7 @@ const session      = require('express-session')
 
 //CREACION DE LA APP CON EXPRESS Y CONFIGURACION DEL PUERTO
 const app = express();
-const PORT = process.env.PORT || 8080
+const PORT = configObjet.port
 
 //LLAMADO A METODOS DE EXPRESS PARA URL,JSON Y CARPETAS
 app.use(express.json());

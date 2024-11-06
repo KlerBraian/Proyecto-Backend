@@ -1,6 +1,7 @@
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+const { configObjet } = require('../config');
 
-const PRIVATE_KEY = 'CoderBackendKler';
+const PRIVATE_KEY = configObjet.private_key;
 
 const generateToken = user => jwt.sign(user, PRIVATE_KEY, { expiresIn: "1d" });
 

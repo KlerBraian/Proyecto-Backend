@@ -31,7 +31,7 @@ createUser =  async (req, res) => {
     const { first_name, last_name, email, password } = req.body
     if (!first_name || !email || !password)
         return res.status(400).send({ status: success, message: "faltan ingresar datos" })
-
+    const newCart = await cartService.createCart();
     const userFound = await this.service.getUser({ email });
     if (userFound)
         return res.status(401).send({
@@ -45,7 +45,8 @@ createUser =  async (req, res) => {
         last_name: last_name,
         email: email,
         password: createHash(password),
-        role : "admin"
+        role,
+        cartId: newCart._id
     }
 
     let result = await this.service.createUser(newUser)
