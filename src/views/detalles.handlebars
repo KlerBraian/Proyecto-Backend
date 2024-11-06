@@ -11,11 +11,29 @@
         <p class="producto-categoria">Categoria: {{product.category}}</p>
         <p class="producto-description">Descripcion: {{product.description}}</p>
         <p class="producto-stock">Unidades disponibles: {{product.stock}}</p>
-        <form action="/api/carts/{{cartId}}" method="POST" class="agregar-al-carrito-form">
+
+
+        {{#if cartId}}
+        <form action="/api/carts" method="POST" class="agregar-al-carrito-form">
             <input type="hidden" name="product" value="{{product._id}}">
             <label for="quantity">Cantidad:</label>
             <input type="number" name="quantity" id="quantity" min="1" value="1" required>
-            <button id="agregar"type="submit" class="boton-agregar">Agregar al carrito</button>
+            <button onclick="addProduct()" id="agregar"type="submit" class="boton-agregar">Agregar al carrito</button>
         </form>
+           {{else}}
+        <p>Debe loguearse para comprar</p>
+        {{/if}}
     </div>
 </main>
+
+<script src=" https://cdn.jsdelivr.net/npm/sweetalert2@11.7.1/dist/sweetalert2.all.min.js "></script>
+<script>
+    function addProduct(){
+         Swal.fire({
+            title: 'Producto agregado',
+            icon: 'success',
+            timer: 2000,  // Duración del mensaje en milisegundos (5000ms = 5 segundos)
+            showConfirmButton: false  // Opcional, oculta el botón de "Aceptar"
+        });
+    }
+</script>

@@ -12,6 +12,8 @@ const router = Router()
 
 const {getPage, getProductDetail, getCartDetail} = new ViewsController()
 
+
+
 router.get("/", getPage );
 
 router.get("/products/:pid", getProductDetail);

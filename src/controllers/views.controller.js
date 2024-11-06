@@ -8,14 +8,28 @@ class ViewsController {
  
 getPage =  async (req, res) => {
     try {
-        let cart = await this.service.cartService.getCarts();
-        let cartId;
+        const isAdmin = req.user.role === "admin"
+        console.log(isAdmin)
+        const isLoggedIn = req.cookies.token; // Dependiendo de cómo manejes la autenticación
+        let cartId = null;
 
-        if (cart.length !== 0) {
-            cartId = cart[0]._id;
+        if (isLoggedIn) {
+            // Si el usuario está logueado, buscar el carrito asociado o crear uno si no existe
+            let cart = await this.service.cartService.getCarts();
+
+            if (cart.length === 0) {
+                cart = await this.service.cartService.createCart({ userId: req.user._id });  // Crear un carrito para el usuario
+                cartId = cart._id;
+            } else {
+                // Si el carrito ya existe, usar el primer carrito encontrado
+                cartId = cart[0]._id;
+            }
         } else {
-            cartId = null
+            // Si el usuario no está logueado, no hay carrito
+            cartId = null;
         }
+
+        
         const { limit = 10, page = 1, query = "", sort } = req.query;
         const limitInt = parseInt(limit);
         const pageInt = parseInt(page);
@@ -30,8 +44,11 @@ getPage =  async (req, res) => {
         const response = await this.service.productService.getProducts(filter, limitInt, pageInt, sort);
         const { payload: products, totalPages, prevPage, nextPage, hasPrevPage, hasNextPage } = response;
 
+         
+    
         // Renderizar la vista con los productos
         res.render("home", {
+            isAdmin,
             cartId,
             products: products,
             totalPages: totalPages,
@@ -53,9 +70,30 @@ getPage =  async (req, res) => {
 
 getProductDetail =  async (req, res) => {
     try {
+        const isLoggedIn = req.cookies.token; // Dependiendo de cómo manejes la autenticación
+        let cartId = null;
+
         const { pid } = req.params
         const product = await this.service.productService.getProduct(pid)
-        res.render("detalles", { product });
+
+        if (isLoggedIn) {
+            // Si el usuario está logueado, buscar el carrito asociado o crear uno si no existe
+            let cart = await this.service.cartService.getCarts();
+
+            if (cart.length === 0) {
+                cart = await this.service.cartService.createCart({ userId: req.user._id });  // Crear un carrito para el usuario
+                cartId = cart._id;
+            } else {
+                // Si el carrito ya existe, usar el primer carrito encontrado
+                cartId = cart[0]._id;
+            }
+            res.status(200).render("detalles", { product, cartId });
+        } else {
+            // Si el usuario no está logueado, no hay carrito
+            cartId = null;
+            return res.status(401).render("detalles", { product, cartId });
+        }
+
     } catch (error) {
         console.log(error);
         res.status(500).send("Error al obtener los productos");

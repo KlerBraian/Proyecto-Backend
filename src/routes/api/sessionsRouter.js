@@ -12,7 +12,7 @@ router.get('/failregister', async (req, res) => {
 })
 
 router.post('/register', passport.authenticate('register', {failureRedirect: '/api/sessions/failregister'}), async (req, res) => {
-    res.send({status: 'success', message: 'usuario registrado'})
+   res.redirect("/")
 })
 
 
@@ -31,11 +31,7 @@ router.post('/login', passport.authenticate('login', {failureRedirect: '/api/ses
         maxAge:1000 *60* 60 *24,
         httpOnly: true
     })
-    .send({
-        status: 'success', 
-        message: 'usuario logueado',
-        dataUser: req.user.email,
-        token})
+        .redirect("/")
 })
 
 

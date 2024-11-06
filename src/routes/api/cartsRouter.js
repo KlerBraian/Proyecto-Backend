@@ -7,7 +7,7 @@ const { CartController } = require('../../controllers/cart.controller');
 
 const routerCart = Router()
 
-const { getCarts, getCart, createCart, updateCart ,updateProductCart, deleteCart, deleteProductCart } = new CartController();
+const { getCarts, getCart, createCart, updateCart ,updateProductCart, deleteCart, deleteProductCart, purchaseCart } = new CartController();
 
 //CONFIGURACION DEL GET PARA OBTENER TODOS LOS CARRITOS
 
@@ -25,7 +25,7 @@ routerCart.get('/:cid', getCart)
 routerCart.post("/", createCart);
 
 
-
+routerCart.post("/:cid/purchase", purchaseCart);
 
 //CONFIGURACION DEL POST POR CARRITO Y PRODUCTO CON SU ID
 

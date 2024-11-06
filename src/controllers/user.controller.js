@@ -40,10 +40,12 @@ createUser =  async (req, res) => {
         })
 
     const newUser = {
+    
         first_name: first_name,
         last_name: last_name,
         email: email,
-        password: createHash(password)
+        password: createHash(password),
+        role : "admin"
     }
 
     let result = await this.service.createUser(newUser)

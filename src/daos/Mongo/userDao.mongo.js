@@ -7,7 +7,7 @@ class UserDaoMongo {
 
 
    get   = async () => await this.model.find({});
-   getBy = async opts => await this.model.findOne({_id: opts}).lean;
+   getBy = async opts => await this.model.findOne(opts);
    create = async newUser => await this.model.create(newUser);
    update = async (opts, elements) => await this.model.findOneAndUpdate(opts, elements);
    delete = async opts => await this.model.deleteOne(opts);

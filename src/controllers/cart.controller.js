@@ -42,7 +42,7 @@ createCart =  async (req, res) => {
             // Actualizar el carrito con el producto
             cart = await this.service.updateProductCart(cart._id, product, parseInt(quantity));
         }
-        res.redirect("/",)
+        res.redirect("/")
     } catch (error) {
         console.log(error);
         res.status(500).send("Error al manejar el carrito");
@@ -54,7 +54,7 @@ updateCart = async (req, res) => {
         const { cid } = req.params;
         const { body } = req
         const carritoModificado = await this.service.updateCart(cid, body)
-        res.send({ status: "success", carritoModificado, })
+        res.send({ status: "success", carritoModificado })
 
     } catch (error) {
         console.log(error)
@@ -94,6 +94,8 @@ deleteProductCart = async (req, res) => {
         console.log(error)
     }
 }
+
+purchaseCart = async (req,res) => {}
 
 }
 

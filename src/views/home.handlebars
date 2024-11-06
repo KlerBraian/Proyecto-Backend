@@ -3,9 +3,11 @@
 <h1 class="titulo">Tienda Kler Backend</h1>
 <h2 class="titulo">Productos</h2>
 
+{{#if isAdmin}}
 <div class="options"><button class="create-products">
 <a href="/createProducts">Portal vendedor</a>
 </button>
+{{/if}}
 
 {{#if cartId }}
 <button class="cart">
@@ -13,6 +15,7 @@
 </button>
 {{/if}}</div>
 <div class="container">
+    <a class="registro" href="/login">Loguearse/ Crea cuenta </a>
 {{#if products.length}}
 <div class="productos-grilla">
     {{#each products}}
@@ -22,7 +25,7 @@
         <p class="producto-price">Precio: ${{this.price}}</p>
         <p class="producto-categoria">Categoría: {{this.category}}</p>
         <p class="producto-description">Descripción: {{this.description}}</p>
-        <p class="producto-stock">Unidades disponibles: {{stock}}</p>
+        <p class="producto-stock">Unidades disponibles: {{this.stock}}</p>
         <button class="options detail">    <a href="/products/{{_id}}" class="producto-detalles">Ver detalles</a></button>
     
     </div>
