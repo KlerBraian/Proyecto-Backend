@@ -1,5 +1,5 @@
-const { cartService } = require("../service");
-const { default: Swal } = require('sweetalert2');
+const { cartService, ticketService } = require("../services");
+
 
 class CartController {
     constructor() {
@@ -93,7 +93,32 @@ deleteProductCart = async (req, res) => {
     }
 }
 
-purchaseCart = async (req,res) => {}
+purchaseCart = async (req,res) => {
+    try {
+        const {cid} = req.params
+        const user = req.user.email
+    
+        const cart = await this.service.getCart(cid)
+        const productsSubtotal = cart.products.map(product => ({
+            ...product,
+            subtotal: product.quantity * product.product.price // Calcula subtotal por producto
+        }));
+
+        // Calcular subtotal total
+        const amount = productsSubtotal.reduce((total, product) => total + product.subtotal, 0);
+       
+         const newTicket = {
+                purchaser :user,
+                amount : amount
+            }
+       
+        const ticket = await ticketService.createTicket(newTicket)
+        res.send({status: "success", ticket})
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 
 }
 

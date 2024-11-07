@@ -2,7 +2,6 @@
 
 //LLAMADO DE ARCHIVOS, METODOS Y FUNCIONES A UTILIZAR
 const { Router } = require('express');
-const { viewsService } = require('../service');
 const { ViewsController } = require('../controllers/views.controller');
 
 const router = Router()
@@ -10,7 +9,7 @@ const router = Router()
 
 //CONFIGURACION DEL GET PARA RENDERIZAR EL VIEW HOME
 
-const {getPage, getProductDetail, getCartDetail} = new ViewsController()
+const {getPage, getProductDetail, getCartDetail, getTicket} = new ViewsController()
 
 
 
@@ -19,6 +18,8 @@ router.get("/", getPage );
 router.get("/products/:pid", getProductDetail);
 
 router.get("/api/carts/:cid", getCartDetail);
+
+router.get("/api/carts/:cid/purchase",getTicket)
 
 //CONFIGURACION DEL GET PARA RENDERIZAR EL SOCKET REALTIMEPRODUCTS
 

@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose')
 
-const collections = 'carts'
+const cartCollections = 'carts'
 
 const CartSchema = new Schema({
     products: {
@@ -21,7 +21,7 @@ CartSchema.pre(['find', 'findOne'], function () {
 });
 
 
-const cartModel = model(collections, CartSchema)
+const cartModel = model(cartCollections, CartSchema)
 
 module.exports = {
     cartModel

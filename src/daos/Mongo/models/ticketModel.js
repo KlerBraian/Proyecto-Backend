@@ -1,34 +1,33 @@
 const { Schema, model } = require('mongoose')
 
-const collections = 'ticket'
+const ticketCollection = 'ticket'
 
 const TicketSchema = new Schema({
-
-    code: String,
-   
-    purchase_datatime: {
-       Date
+    code: {
+        type: Number,
+        unique: true,
+        default: function () {
+            return Math.floor(Math.random() * 1000000);  
+        }
     },
-    
-    age: Number,
-   
-    password : {
+
+    purchase_datetime: {
+        type: Date,
+        default: Date.now 
+    },
+
+    amount: {
+        type: Number,
+    },
+
+    purchaser: {
         type: String,
-        required: true,
     },
-   
-    amount: Number,
-    
-    purhcaser: String
-})
-
-TicketSchema.pre(['find', 'findOne'], function () {
-    this.populate('amount.product');
 });
 
 
-const TicketModel = model(collections, TicketSchema)
+const ticketModel = model(ticketCollection, TicketSchema)
 
 module.exports = {
-    TicketModel
+    ticketModel
 }

@@ -13,7 +13,8 @@
             <p class="producto-price">${{product.price}}</p>
             <p class="producto-categoria">Categoría: {{product.category}}</p>
             <p class="producto-description">{{product.description}}</p>
-            <p class="producto-description">Cantidad: {{quantity}}</p>
+            <p class="producto-description">Stock: {{product.stock}}</p>
+            <p class="producto-description">Cantidad seleccionada: {{quantity}}</p>
             <p class="producto-description">Subtotal: ${{subtotal}}</p> <!-- Mostrar subtotal de cada producto -->
             <h1>{{cartId}}</h1>
             <form class="eliminar-carrito" onsubmit="updateProductQuantity(event, '{{product._id}}', '{{../cartId}}')">
@@ -28,10 +29,13 @@
         {{/each}}
 
         <div class="total-carrito">
-            <p>Total del carrito: ${{subtotalTotal}}</p> <!-- Mostrar subtotal total -->
+            <p>Total del carrito: ${{subtotalTotal}}</p>
+         <!-- Mostrar subtotal total -->
         </div>
         <div class="pages "> <button class="vaciar" onclick="emptyCart('{{cartId}}')">Vaciar Carrito</button></div>
-
+        <form action="/api/carts/{{cartId}}/purchase" method="POST">
+              <div class="pages"><button class="vaciar">Finalizar compra</button></div></form>
+  
     </div>
     {{else}}
     <p>No hay productos en el carrito.</p>

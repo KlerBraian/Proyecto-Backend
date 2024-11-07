@@ -1,4 +1,4 @@
-const { viewsService } = require ('../service')
+const { viewsService } = require ('../services')
 
 class ViewsController {
  constructor () {
@@ -100,8 +100,18 @@ getCartDetail = async (req, res) => {
     }
 }
 
+
+
+getTicket = async (req,res) => {
+    try {
+        res.render("ticket")
+        
+    } catch (error) {
+        console.log(error)
+    }
 }
 
+}
 module.exports = {
     ViewsController
 }
