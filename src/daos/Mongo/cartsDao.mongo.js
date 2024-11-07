@@ -15,14 +15,17 @@ class CartDaoMongo {
     update = async (opts, nProducts) => await this.model.findByIdAndUpdate({ _id: opts }, { $set: { products: nProducts.products } }, { new: true });
 
 
-    updateProductCart = async (cartId, productId, quantity) => {
+    updateProductCart = async (cartId, productId, quantity, setQuantity = false) => {
 
         const cart = await this.model.findOne({ _id: cartId, "products.product": productId });
 
         if (cart) {
+            const updateOperation = setQuantity 
+            ? { $set: { "products.$.quantity": quantity } }  // Establecer cantidad específica
+            : { $inc: { "products.$.quantity": quantity } };
             return await this.model.updateOne(
                 { _id: cartId, "products.product": productId },
-                { $set: { "products.$.quantity": quantity } },
+                updateOperation,
                 { new: true }
             );
         } else {

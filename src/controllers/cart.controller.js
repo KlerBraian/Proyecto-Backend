@@ -28,17 +28,15 @@ getCart = async (req, res) => {
 
 createCart =  async (req, res) => {
     try {
-        const { product, quantity } = req.body; // Asegúrate de que `quantity` sea un número
-        const userId = req.user._id;
-        console.log(userId)
+        const { product, quantity  } = req.body; // Asegúrate de que `quantity` sea un número
+        const userId = req.user.cartId
+
         let cart = await this.service.getCart(userId);
 
         if (!cart) {
             // Crear un nuevo carrito con el producto
-            cart = await this.service.createCart({userId, products: [{ product, quantity: parseInt(quantity) }] });
+            cart = await this.service.createCart({_id: userId, products: [{ product, quantity: parseInt(quantity) }] });
         } else {
-            // Usar el primer carrito existente
-            cart = carts[0];
             // Actualizar el carrito con el producto
             cart = await this.service.updateProductCart(cart._id, product, parseInt(quantity));
         }
@@ -65,7 +63,7 @@ updateProductCart =  async (req, res) => {
     try {
         const { cid, pid } = req.params;
         const { quantity } = req.body
-        const response = await this.service.updateProductCart(cid, pid, quantity);
+        const response = await this.service.updateProductCart(cid, pid, quantity, true);
         res.send({ status: "success", data: response })
     }
     catch (error) {

@@ -39,10 +39,8 @@ const initializePassport = () => {
         usernameField: 'email' 
     }, async (req, username, password, done)=>{
         const { first_name, last_name } = req.body
-        console.log(req.body)
         try {
             let userFound = await userMongo.getBy({email: username})
-            console.log(userFound)
             if (userFound) return done(null, false)
         
             let newUser = {
@@ -51,9 +49,7 @@ const initializePassport = () => {
                 email: username,
                 password: createHash(password)
              }
-            console.log(newUser)
             let result = await userMongo.create(newUser)
-            console.log(result)
             return done(null, result)
 
 
@@ -73,13 +69,20 @@ const initializePassport = () => {
 
             if(!isValidPassword(password, user.password)) return done(null, false)
           
-
-            if (!user.cartId) {
+    
+            if (user.cartId) {
+                console.log(user.cartId)
+                  let cart = await cartMongo.getBy({_id: user.cartId});
+                  if (!cart) {
+                    newCart = await cartMongo.create({_id : user.cartId})
+                  }
+            } else {
+                // Si el usuario no tiene un cartId, crear un nuevo carrito y asignarlo al usuario
                 const newCart = await cartMongo.create();
-                user.cartId = newCart._id;
-                await user.save()
+                user.cartId = newCart._id;  // Asignar el nuevo carrito al usuario
+                await user.save(); // Guardar el usuario actualizado con el cartId
             }
-            
+
             return done(null, user)
         } catch (error) {
             return done(error)

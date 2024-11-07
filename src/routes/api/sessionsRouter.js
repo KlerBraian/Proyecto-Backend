@@ -43,8 +43,12 @@ router.get('/current', passport.authenticate('jwt', {session:false}), (req, res)
         })
 })
 
+
 router.post('/logout', (req, res) => {
-    res.send("logout")
-})
+    res.clearCookie('token');
+
+    res.status(200).redirect("/");
+});
+
 
 module.exports = router

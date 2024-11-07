@@ -1,4 +1,5 @@
 <main>
+    {{#if isLoggedIn}}
     <h1 class="titulo" id="titulo">Carrito de Compras</h1>
     <button class="options return">
         <a href="/">Volver</a>
@@ -35,6 +36,10 @@
     {{else}}
     <p>No hay productos en el carrito.</p>
     {{/if}}
+  {{else}}
+    <p>Debes iniciar sesion para ver tu carrito</p>
+       <a class="registro" href="/login">Loguearse/Crear cuenta</a>
+  {{/if}} 
 </main>
 <script src=" https://cdn.jsdelivr.net/npm/sweetalert2@11.7.1/dist/sweetalert2.all.min.js "></script>
 <script>

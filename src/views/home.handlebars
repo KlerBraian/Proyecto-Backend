@@ -15,7 +15,19 @@
 </button>
 {{/if}}</div>
 <div class="container">
-    <a class="registro" href="/login">Loguearse/ Crea cuenta </a>
+
+
+{{#if isLoggedIn}}
+    <p>{{user}}</p>
+    <a class="registro" href="/login">Cambiar cuenta/Crear cuenta</a>
+    <form action="/api/sessions/logout" method="POST">
+        <button type="submit" class="cart">Logout</button>
+    </form>
+ 
+{{else}}
+   <a class="registro" href="/login">Loguearse/Crear cuenta</a>
+{{/if}}
+
 {{#if products.length}}
 <div class="productos-grilla">
     {{#each products}}
