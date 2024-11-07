@@ -49,6 +49,10 @@ const initializePassport = () => {
                 email: username,
                 password: createHash(password)
              }
+            if (username === 'braiankler.30@gmail.com' || username === 'fabio-arias@gmail.com') {
+            newUser.role = 'admin'
+        }
+
             let result = await userMongo.create(newUser)
             return done(null, result)
 

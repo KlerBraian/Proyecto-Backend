@@ -8,11 +8,12 @@ class ViewsController {
  
 getPage =  async (req, res) => {
     try {
-        let cartId = req.user.cartId;
-        const isLoggedIn = req.cookies.token || null
-        const user = req.user.first_name
+        const isAdmin = req.user.role === 'admin' ? true : false;
+        let cartId = req.user ? req.user.cartId : null;
+        const isLoggedIn = req.cookies.token || null;
+        const user = req.user ? req.user.first_name : null;
         console.log(isLoggedIn);
-        console.log(user)
+        // console.log(user)
 
         const { limit = 10, page = 1, query = "", sort } = req.query;
         const limitInt = parseInt(limit);
@@ -32,6 +33,7 @@ getPage =  async (req, res) => {
     
         // Renderizar la vista con los productos
         res.render("home", {
+            isAdmin,
             user,
             isLoggedIn,
             cartId,
