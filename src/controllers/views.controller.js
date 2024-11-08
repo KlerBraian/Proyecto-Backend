@@ -6,14 +6,13 @@ class ViewsController {
  }    
 
  
-getPage =  async (req, res) => {
+ getPage = async (req, res) => {
     try {
-        const isAdmin = req.user.role === 'admin' ? true : false;
-        let cartId = req.user ? req.user.cartId : null;
+        // Verificar si req.user existe antes de acceder a sus propiedades
+        const isAdmin = req.user?.role === 'admin';
+        const cartId = req.user?.cartId || null;
         const isLoggedIn = req.cookies.token || null;
-        const user = req.user ? req.user.first_name : null;
-        console.log(isLoggedIn);
-        // console.log(user)
+        const user = req.user?.first_name || null;
 
         const { limit = 10, page = 1, query = "", sort } = req.query;
         const limitInt = parseInt(limit);
@@ -29,30 +28,29 @@ getPage =  async (req, res) => {
         const response = await this.service.productService.getProducts(filter, limitInt, pageInt, sort);
         const { payload: products, totalPages, prevPage, nextPage, hasPrevPage, hasNextPage } = response;
 
-         
-    
         // Renderizar la vista con los productos
         res.render("home", {
             isAdmin,
             user,
             isLoggedIn,
             cartId,
-            products: products,
-            totalPages: totalPages,
+            products,
+            totalPages,
             currentPage: pageInt,
-            hasPrevPage: hasPrevPage,
-            hasNextPage: hasNextPage,
-            prevPage: prevPage,
-            nextPage: nextPage,
+            hasPrevPage,
+            hasNextPage,
+            prevPage,
+            nextPage,
             limit: limitInt,
-            query: query,
-            sort: sort
+            query,
+            sort
         });
     } catch (error) {
         console.error(error);
         res.status(500).send("Hubo un error al obtener los productos");
     }
-}
+};
+
 
 
 getProductDetail =  async (req, res) => {

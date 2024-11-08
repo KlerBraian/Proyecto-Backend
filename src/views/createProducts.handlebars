@@ -2,6 +2,7 @@
 <button class="options return">
     <a href="/">Volver</a>
 </button>
+<h2>Crear producto</h2>
 <form class="crear-producto" onsubmit="agregarProducto(event)">
     <input type="text" id="title" class="productbox" placeholder="Titulo" required>
     <input type="text" id="thumbnail" class="productbox" placeholder="Ingrese url de la imagen" required>
@@ -12,71 +13,120 @@
     <input type="number" id="stock" class="productbox" placeholder="Stock" min="0" required>
     <button class="enviar" type="submit">Enviar</button>
 </form>
+<h2>Modificar producto</h2>
+<form class="crear-producto" onsubmit="modificarProducto(event)">
+     <input type="text" id="code" class="productbox" placeholder="Codigo" required>
+    <input type="text" id="title" class="productbox" placeholder="Nuevo titulo">
+    <input type="text" id="thumbnail" class="productbox" placeholder="Ingrese url de la nueva imagen" >
+    <input type="number" id="price" class="productbox" placeholder="Nuevo Precio" min="0" >
+    <input type="number" id="stock" class="productbox" placeholder="Nuevo Stock" min="0">
+    <button class="enviar" type="submit">Enviar</button>
+</form>
+<h2>Borrar producto</h2>
+<form class="crear-producto" onsubmit="borrarProducto(event)">
+   <input type="text" id="code" class="productbox" placeholder="Codigo" required>
+    <button class="enviar" type="submit">Enviar</button>
+</form>
+
 
 <script src=" https://cdn.jsdelivr.net/npm/sweetalert2@11.7.1/dist/sweetalert2.all.min.js "></script>
 <script>
-    // SELECCIONAMOS LOS INPUTS A UTILIZAR
-    let listContainer = document.querySelector("#list-container");
-    let inputTitle = document.querySelector("#title");
-    let inputPrice = document.querySelector("#price");
-    let inputCode = document.querySelector("#code");
-    let inputDescription = document.querySelector("#description");
-    let inputStock = document.querySelector("#stock");
-    let inputCategoria = document.querySelector("#category");
-    let inputImage = document.querySelector("#thumbnail");
-    let inputs = document.querySelectorAll(".productbox");
+   
+   // Función para agregar producto
 
-    // Función para agregar un producto y enviarlo al servidor por una solicitud POST verificando que no falte ningún campo
-    function agregarProducto(event) {
-        event.preventDefault(); // Previene el envío del formulario tradicional
+async function obtenerProducto(code) {
+    try {
+        const response = await fetch('/api/products');
+        const products = await response.json();
+        const getProduct= products.payload.listProducts.find(product => code.toString() === product.code)._id
+        return getProduct;
+    } catch (error) {
+        console.error('Error al obtener los productos:', error);
+    }
+}
 
-        if (
-            !inputTitle.value ||
-            !inputPrice.value ||
-            !inputCode.value ||
-            !inputDescription.value ||
-            !inputStock.value ||
-            !inputCategoria.value ||
-            !inputImage.value
+function agregarProducto(event) {
+    event.preventDefault();
+
+    const form = event.target;
+
+     if (
+            !form.title.value ||
+            !form.price.value ||
+            !form.code.value ||
+            !form.description.value ||
+            !form.stock.value ||
+            !form.category.value ||
+            !form.thumbnail.value
         ) {
             Swal.fire("Debe rellenar todos los campos");
             return;
         }
 
-        const producto = {
-            title: inputTitle.value,
-            thumbnail: inputImage.value,
-            price: Number(inputPrice.value),
-            code: inputCode.value,
-            description: inputDescription.value,
-            stock: Number(inputStock.value),
-            category: inputCategoria.value
-        };
+    const producto = {
+        title: form.title.value,
+        thumbnail: form.thumbnail.value,
+        price: Number(form.price.value),
+        code: form.code.value,
+        description: form.description.value,
+        stock: Number(form.stock.value),
+        category: form.category.value
+    };
 
-        // Enviar el producto al servidor vía POST
-        fetch('/api/products', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(producto)
+    fetch('/api/products', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(producto)
+    })
+        .then(response => response.json())
+        .then(data => {
+            Swal.fire("Producto agregado con éxito");
+            form.reset(); // Limpiar los campos del formulario
         })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Producto guardado en la base de datos:', data);
-                Swal.fire("Producto agregado con éxito");
-                limpiarInputs(); // Limpiar los campos después de agregar el producto
-            })
-            .catch(error => {
-                console.error('Error al guardar el producto:', error);
-                Swal.fire("Error al agregar el producto");
-            });
-    }
+        .catch(error => Swal.fire("Error al agregar el producto"));
+}
 
-    // Función para limpiar los inputs
-    function limpiarInputs() {
-        inputs.forEach(input => {
-            input.value = '';
-        });
-    }
+// Función para modificar producto
+async function modificarProducto(event) {
+    event.preventDefault();
+    const form = event.target;
+    const code = form.code.value;
+    const getProductId = await obtenerProducto(code)
+    const producto = {
+        title: form.title.value || undefined,
+        thumbnail: form.thumbnail.value || undefined,
+        price: form.price.value ? Number(form.price.value) : undefined,
+        stock: form.stock.value ? Number(form.stock.value) : undefined,
+    };
+
+    // Limpiar campos vacíos
+    Object.keys(producto).forEach(key => producto[key] === undefined && delete producto[key]);
+
+    fetch(`/api/products/${getProductId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(producto)
+    })
+        .then(response => response.json())
+        .then(data => Swal.fire("Producto modificado con éxito"))
+        .catch(error => Swal.fire("Error al modificar el producto"));
+}
+
+// Función para borrar producto
+async function borrarProducto(event) {
+    event.preventDefault();
+
+    const form = event.target;
+    const code = form.code.value;
+    const getProductId = await obtenerProducto(code)
+
+    fetch(`/api/products/${getProductId}`, {
+        method: 'DELETE',
+    })
+        .then(response => response.json())
+        .then(data => Swal.fire("Producto borrado con éxito"))
+        .catch(error => Swal.fire("Error al borrar el producto"));
+}
+
+
 </script>

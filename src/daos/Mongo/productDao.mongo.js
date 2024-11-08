@@ -17,8 +17,8 @@ class ProductDaoMongo {
             .skip(skip)  // Paginación: saltar productos
             .limit(limit)  // Limitar la cantidad de productos
             .lean();
-    
         // Obtener el total de productos
+        const listProducts = await this.model.find();
         const totalProducts = await this.model.countDocuments(filter);
         const totalPages = Math.ceil(totalProducts / limit);
     
@@ -28,7 +28,8 @@ class ProductDaoMongo {
             prevPage: page > 1 ? page - 1 : null,
             nextPage: page < totalPages ? page + 1 : null,
             hasPrevPage: page > 1,
-            hasNextPage: page < totalPages
+            hasNextPage: page < totalPages,
+            listProducts : listProducts
         };
     };
     
