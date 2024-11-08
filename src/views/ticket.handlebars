@@ -1,7 +1,42 @@
 <main>
-    <div class="">
-        <h1 class="">Ticket</h1>
+<h1>Muchas gracias por su compra</h1>
+<h2>Detalle de Compra</h2>
+<p><strong>Comprador:</strong> {{ticket.purchaser}}</p>
+<p><strong>Total de la compra:</strong> ${{ticket.amount}}</p>
 
+{{#if productosComprados.length}}
+    <ul>
+        {{#each productosComprados}}
+            <li>
+                <p><strong>Título:</strong> {{this.title}}</p>
+                <p><strong>Precio:</strong> ${{this.price}}</p>
+                <p><strong>Categoría:</strong> {{this.category}}</p>
+                <p><strong>Cantidad solicitada:</strong>{{this.quantity}}</p>
+                <p><strong>Subtotal:{{this.subtotal}}</strong></p>
+            </li>
+        {{/each}}
+    </ul>
+{{/if}}
 
-    </div>
+<h3>Productos No Disponibles</h3>
+<p>Los productos en esta seccion quedaran en su carrito, puede eliminarlos o guardarlos hasta que haya stock disponible. Muchas gracias por su compra</p>
+{{#if productosNoDisponibles.length}}
+    <ul>
+        {{#each productosNoDisponibles}}
+            <li>
+                <p><strong>Título:</strong> {{this.title}}</p>
+                <p><strong>Precio:</strong> ${{this.price}}</p>
+                <p><strong>Categoría:</strong> {{this.category}}</p>
+                <p><strong>Stock:</strong> {{this.stock}}</p>
+                <p><strong>Cantidad solicitada:</strong>{{this.quantity}}</p>
+                <p><strong>Razón:</strong> {{this.razon}}</p>
+            </li>
+        {{/each}}
+    </ul>
+{{else}}
+    <p>No hay productos no disponibles.</p>
+{{/if}}
+    <button class="options return">
+        <a href="/">Volver a inicio</a>
+    </button>
 </main>

@@ -102,14 +102,25 @@ getCartDetail = async (req, res) => {
 
 
 
-getTicket = async (req,res) => {
+getTicket = async (req, res) => {
     try {
-        res.render("ticket")
-        
+        const ticketId = req.session.ticketId;
+        const productosNoDisponibles = req.session.prodNoComprados; // Productos no disponibles
+        const productosComprados = req.session.prodComprados; // Productos comprados
+        const ticket = await this.service.ticketService.getTicket(ticketId)
+        // Renderizar la vista `ticket` con los datos
+        res.render("ticket", {
+            ticket: ticket,
+            productosNoDisponibles: productosNoDisponibles,
+            productosComprados : productosComprados
+        });
+        delete req.session.ticketId;
+        delete req.session.prodComprados;
+        delete req.session.prodNoComprados;
     } catch (error) {
-        console.log(error)
+        console.log(error);
     }
-}
+};
 
 }
 module.exports = {

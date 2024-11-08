@@ -1,4 +1,4 @@
-const { cartService, ticketService } = require("../services");
+const { cartService, ticketService, productService } = require("../services");
 
 
 class CartController {
@@ -99,21 +99,63 @@ purchaseCart = async (req,res) => {
         const user = req.user.email
     
         const cart = await this.service.getCart(cid)
-        const productsSubtotal = cart.products.map(product => ({
+        const disponibles = [];
+        const noDisponibles= []
+
+        cart.products.forEach((cartProduct) => {
+            const { product, quantity } = cartProduct;
+            // Verificamos si hay suficiente stock
+            if (quantity <= product.stock) {
+                disponibles.push(cartProduct); // Si hay stock suficiente
+                productService.updateProduct(product._id,{stock: product.stock - quantity});
+                this.service.deleteProductCart(cid,product._id)
+            } else {
+                noDisponibles.push(cartProduct); // Si no hay stock suficiente
+            }
+        });
+ 
+        const productsSubtotal = disponibles.map(product => ({
             ...product,
             subtotal: product.quantity * product.product.price // Calcula subtotal por producto
         }));
 
         // Calcular subtotal total
         const amount = productsSubtotal.reduce((total, product) => total + product.subtotal, 0);
-       
+        
          const newTicket = {
                 purchaser :user,
                 amount : amount
             }
-       
+            const prodComprados =  disponibles.map(cartProduct => {
+                const {product, quantity} = cartProduct
+                return {
+                    title: product.title,
+                    price: product.price,
+                    category: product.category,
+                    quantity : `${quantity} unidades`,
+                    subtotal:  quantity * product.price
+                };
+            });
+
+            const prodNoComprados = noDisponibles.map(cartProduct => {
+                const {product, quantity} = cartProduct
+                return {
+                    razon: "Denegado por falta de stock",
+                    title: product.title,
+                    price: product.price,
+                    category: product.category,
+                    stock: product.stock,
+                    quantity : `${quantity} unidades`
+                };
+            });
+
+            req.session.prodComprados = prodComprados;
+            req.session.prodNoComprados = prodNoComprados;
+         
         const ticket = await ticketService.createTicket(newTicket)
-        res.send({status: "success", ticket})
+        req.session.ticketId = ticket._id;
+
+        res.redirect(`/api/carts/${cid}/purchase`);
     } catch (error) {
         console.log(error)
     }

@@ -10,8 +10,8 @@ const UsersRepository = require("../repositories/users.repository");
 const cartService = new CartRepository (new CartDaoMongo());
 const productService = new ProductRepository (new ProductDaoMongo());
 const userService = new UsersRepository (new UserDaoMongo());
-const viewsService = {cartService, productService}
 const ticketService =  new TicketRepository(new TicketDaoMongo())
+const viewsService = {cartService, productService, ticketService}
 
 module.exports = {
     userService,

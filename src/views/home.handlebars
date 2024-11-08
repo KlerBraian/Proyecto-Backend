@@ -2,65 +2,72 @@
 
 <h1 class="titulo">Tienda Kler Backend</h1>
 <h2 class="titulo">Productos</h2>
-
-{{#if isAdmin}}
-<div class="options"><button class="create-products">
-<a href="/createProducts">Portal vendedor</a>
-</button>
-{{/if}}
-
-{{#if cartId }}
-<button class="cart">
-<a href="/api/carts/{{cartId}}">Carrito 🛒</a>
-</button>
-{{/if}}</div>
-<div class="container">
-
-
-{{#if isLoggedIn}}
+<div>
+    {{#if isLoggedIn}}
     <p>{{user}}</p>
     <a class="registro" href="/login">Cambiar cuenta/Crear cuenta</a>
     <form action="/api/sessions/logout" method="POST">
         <button type="submit" class="cart">Logout</button>
     </form>
- 
-{{else}}
-   <a class="registro" href="/login">Loguearse/Crear cuenta</a>
-{{/if}}
 
-{{#if products.length}}
-<div class="productos-grilla">
-    {{#each products}}
-    <div class="producto">
-        <h3 class="producto-title">{{this.title}}</h3>
-        <img class="producto-img" src="{{this.thumbnail}}" alt="">
-        <p class="producto-price">Precio: ${{this.price}}</p>
-        <p class="producto-categoria">Categoría: {{this.category}}</p>
-        <p class="producto-description">Descripción: {{this.description}}</p>
-        <p class="producto-stock">Unidades disponibles: {{this.stock}}</p>
-        <button class="options detail">    <a href="/products/{{_id}}" class="producto-detalles">Ver detalles</a></button>
-    
+    {{else}}
+    <a class="registro" href="/login">Loguearse/Crear cuenta</a>
+    {{/if}}
+</div>
+{{#if isAdmin}}
+<div class="options">
+    <button class="create-products">
+        <a href="/createProducts">Portal vendedor</a>
+    </button>
+    {{/if}}
+
+    {{#if cartId }}
+    <button class="cart">
+        <a href="/api/carts/{{cartId}}">Carrito 🛒</a>
+    </button>
+    {{/if}}
+</div>
+
+<div class="container">
+    {{#if products.length}}
+    <div class="productos-grilla">
+        {{#each products}}
+        <div class="producto">
+            {{#if @root.isAdmin}}
+            <p class="producto-tilte">Code:{{this.code}}</p>
+            {{/if}}
+            <h3 class="producto-title">{{this.title}}</h3>
+            <img class="producto-img" src="{{this.thumbnail}}" alt="">
+            <p class="producto-price">Precio: ${{this.price}}</p>
+            <p class="producto-categoria">Categoría: {{this.category}}</p>
+            <p class="producto-description">Descripción: {{this.description}}</p>
+            <p class="producto-stock">Unidades disponibles: {{this.stock}}</p>
+            <button class="options detail"> <a href="/products/{{_id}}" class="producto-detalles">Ver
+                    detalles</a></button>
+
+        </div>
+        {{/each}}
     </div>
-    {{/each}}
-</div>
 
-<!-- Paginación -->
-<div class="pagination">
-    {{#if hasPrevPage}}
-    <button class="options pages">    <a class="prev" href="/?limit={{limit}}&page={{prevPage}}&query={{query}}&sort={{sort}}">Página Anterior</a>
-</button>
-    {{/if}}
+    <!-- Paginación -->
+    <div class="pagination">
+        {{#if hasPrevPage}}
+        <button class="options pages"> <a class="prev"
+                href="/?limit={{limit}}&page={{prevPage}}&query={{query}}&sort={{sort}}">Página Anterior</a>
+        </button>
+        {{/if}}
 
-    {{#if hasNextPage}}
-    <button class="options pages">    
-        <a class="next" href="/?limit={{limit}}&page={{nextPage}}&query={{query}}&sort={{sort}}">Página Siguiente</a>
-</button>
+        {{#if hasNextPage}}
+        <button class="options pages">
+            <a class="next" href="/?limit={{limit}}&page={{nextPage}}&query={{query}}&sort={{sort}}">Página
+                Siguiente</a>
+        </button>
+        {{/if}}
+        <p class="page">Página {{currentPage}} de {{totalPages}}</p>
+    </div>
+    {{else}}
+    <p>No hay productos disponibles.</p>
     {{/if}}
-    <p class="page">Página {{currentPage}} de {{totalPages}}</p>
-</div>
-{{else}}
-<p>No hay productos disponibles.</p>
-{{/if}}
 </div>
 </body>
 
