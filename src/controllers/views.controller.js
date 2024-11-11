@@ -56,18 +56,18 @@ class ViewsController {
 getProductDetail =  async (req, res) => {
     try {
         const isLoggedIn = req.cookies.token; // Dependiendo de cómo manejes la autenticación
-        let cartId = req.user.cartId
-
+        let cartId = null;
+        
         const { pid } = req.params
         const product = await this.service.productService.getProduct(pid)
-
+    
         if (isLoggedIn) {
             // Si el usuario está logueado, buscar el carrito asociado o crear uno si no existe
- 
+            cartId = req.user.cartId
             res.status(200).render("detalles", { product, cartId });
         } else {
             // Si el usuario no está logueado, no hay carrito
-            cartId = null;
+     
             return res.status(401).render("detalles", { product, cartId });
         }
 

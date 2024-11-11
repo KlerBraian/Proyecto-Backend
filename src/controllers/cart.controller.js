@@ -40,6 +40,8 @@ createCart =  async (req, res) => {
             // Actualizar el carrito con el producto
             cart = await this.service.updateProductCart(cart._id, product, parseInt(quantity));
         }
+        req.user.cartId = cart._id
+
         res.redirect("/")
     } catch (error) {
         console.log(error);
