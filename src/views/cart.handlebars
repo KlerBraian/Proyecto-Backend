@@ -7,21 +7,22 @@
     {{#if products.length}}
     <div class="productos-cart">
         {{#each products}}
-        <div class="producto">
+        <div class="cart-producto">
             <h3 class="producto-title">{{product.title}}</h3>
             <img src="{{product.thumbnail}}" alt="">
             <p class="producto-price">${{product.price}}</p>
+            <div>
             <p class="producto-categoria">Categoría: {{product.category}}</p>
             <p class="producto-description">{{product.description}}</p>
             <p class="producto-description">Stock: {{product.stock}}</p>
             <p class="producto-description">Cantidad seleccionada: {{quantity}}</p>
-            <p class="producto-description">Subtotal: ${{subtotal}}</p> <!-- Mostrar subtotal de cada producto -->
-            <h1>{{cartId}}</h1>
+            <p class="producto-description">Subtotal: ${{subtotal}}</p> <!-- Mostrar subtotal de cada producto -->      
+            </div>
             <form class="eliminar-carrito" onsubmit="updateProductQuantity(event, '{{product._id}}', '{{../cartId}}')">
                 <label for="quantity">Cantidad a modificar:</label>
                 <input type="number" name="quantity" min="1" value="1" />
                 <!-- Botón para actualizar la cantidad -->
-                <button class="modify" type="submit">Modificar Carrito</button>
+                <button class="modify" type="submit">Modificar cantidad</button>
             </form>
             <button class="delete" onclick="deleteProduct('{{../cartId}}', '{{product._id}}')">Eliminar
                 producto</button>
@@ -32,17 +33,20 @@
             <p>Total del carrito: ${{subtotalTotal}}</p>
          <!-- Mostrar subtotal total -->
         </div>
-        <div class="pages "> <button class="vaciar" onclick="emptyCart('{{cartId}}')">Vaciar Carrito</button></div>
+        <div class="pages "> <button class="vaciar" onclick="emptyCart('{{cartId}}')">Vaciar Carrito</button>
         <form action="/api/carts/{{cartId}}/purchase" method="POST">
-              <div class="pages"><button class="vaciar">Finalizar compra</button></div></form>
-  
+              <button class="vaciar">Finalizar compra</button></form>
+  </div>
     </div>
     {{else}}
     <p>No hay productos en el carrito.</p>
     {{/if}}
   {{else}}
     <p>Debes iniciar sesion para ver tu carrito</p>
-       <a class="registro" href="/login">Loguearse/Crear cuenta</a>
+    <button>
+         <a  href="/login">Loguearse/Crear cuenta</a>
+    </button>
+      
   {{/if}} 
 </main>
 <script src=" https://cdn.jsdelivr.net/npm/sweetalert2@11.7.1/dist/sweetalert2.all.min.js "></script>

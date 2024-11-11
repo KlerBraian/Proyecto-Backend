@@ -2,16 +2,26 @@
 
 <h1 class="titulo">Tienda Kler Backend</h1>
 <h2 class="titulo">Productos</h2>
-<div>
+<div class="session">
     {{#if isLoggedIn}}
-    <p>{{user}}</p>
-    <a class="registro" href="/login">Cambiar cuenta/Crear cuenta</a>
-    <form action="/api/sessions/logout" method="POST">
-        <button type="submit" class="cart">Logout</button>
-    </form>
-
+    <div>
+        <label class="label-user">Usuario actual:</label>
+        <p class="user">{{user}}</p>
+    </div>
+    <div> 
+        <button>
+            <a href="/login">Cambiar cuenta/Crear cuenta</a>
+        </button></div>
+    <div>
+        <form action="/api/sessions/logout" method="POST">
+            <button class="logout" type="submit">Logout</button>
+        </form>
+    </div>
     {{else}}
-    <a class="registro" href="/login">Loguearse/Crear cuenta</a>
+    <button>
+        <a href="/login">Loguearse/Crear cuenta</a>
+    </button>
+
     {{/if}}
 </div>
 {{#if isAdmin}}
