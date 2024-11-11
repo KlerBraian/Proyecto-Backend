@@ -256,3 +256,6 @@
                             .main-ticket {
                                 margin-inline-start: 1rem;
                             }
+                            .options-admin-title {
+                                text-align: center;
+                            }

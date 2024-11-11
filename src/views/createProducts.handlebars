@@ -2,7 +2,7 @@
 <button class="options return">
     <a href="/">Volver</a>
 </button>
-<h2>Crear producto</h2>
+<h2 class="options-admin-title">Crear producto</h2>
 <form class="crear-producto" onsubmit="agregarProducto(event)">
     <input type="text" id="title" class="productbox" placeholder="Titulo" required>
     <input type="text" id="thumbnail" class="productbox" placeholder="Ingrese url de la imagen" required>
@@ -13,7 +13,7 @@
     <input type="number" id="stock" class="productbox" placeholder="Stock" min="0" required>
     <button class="enviar" type="submit">Enviar</button>
 </form>
-<h2>Modificar producto</h2>
+<h2 class="options-admin-title">Modificar producto</h2>
 <form class="crear-producto" onsubmit="modificarProducto(event)">
      <input type="text" id="code" class="productbox" placeholder="Codigo" required>
     <input type="text" id="title" class="productbox" placeholder="Nuevo titulo">
@@ -22,7 +22,7 @@
     <input type="number" id="stock" class="productbox" placeholder="Nuevo Stock" min="0">
     <button class="enviar" type="submit">Enviar</button>
 </form>
-<h2>Borrar producto</h2>
+<h2 class="options-admin-title">Borrar producto</h2>
 <form class="crear-producto" onsubmit="borrarProducto(event)">
    <input type="text" id="code" class="productbox" placeholder="Codigo" required>
     <button class="enviar" type="submit">Enviar</button>
