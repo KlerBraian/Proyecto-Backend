@@ -7,6 +7,7 @@ exports.configObjet = {
     private_key : process.env.PRIVATE_KEY
 }
 
+
 exports.connectDb = async () => {
     console.log("Base de datos conectada");
     await connect(process.env.MONGO_URL)

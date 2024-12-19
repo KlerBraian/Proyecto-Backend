@@ -4,6 +4,7 @@ const cartsRouter = require("./api/cartsRouter.js")
 const viewsRouter = require('./viewsRouter.js');
 const sessionsRouter= require('./api/sessionsRouter.js')
 const userRouter = require('./api/userRouter.js')
+const mocksRouter = require('./api/mocksrouter.js')
 
 const router = Router()
 
@@ -12,5 +13,6 @@ router.use('/api/products', productRouter);
 router.use('/api/carts', cartsRouter)
 router.use('/api/sessions', sessionsRouter)
 router.use('/api/users', userRouter)
+router.use('/api/mocks', mocksRouter)
 
 module.exports = router
