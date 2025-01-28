@@ -12,11 +12,18 @@ const passport = require('passport');
 const MongoStore = require('connect-mongo')
 const { initializePassport } = require('./passport/passport.config.js');
 const session      = require('express-session')
+const cors = require('cors');
 
 
 //CREACION DE LA APP CON EXPRESS Y CONFIGURACION DEL PUERTO
 const app = express();
 const PORT = configObjet.port
+
+
+const swaggerJsDoc = require('swagger-jsdoc')
+const swaggerUiExpress = require('swagger-ui-express') 
+const {swaggerOptions} = require ("./config/swagger.DockConfig.js")
+
 
 //LLAMADO A METODOS DE EXPRESS PARA URL,JSON Y CARPETAS
 app.use(express.json());
@@ -24,6 +31,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'))
 app.use(express.static(__dirname + '/db'));
 app.use(cookieParser('palabrasecreta'))
+app.use(cors());
 // Configuración de express-session
 app.use(session({
     store: MongoStore.create({
@@ -50,6 +58,11 @@ connectDb()
 
 //LLAMADO A LAS RUTAS PARA PODER UTILIZARLAS
 app.use(appRouter)
+
+const specs = swaggerJsDoc(swaggerOptions)
+app.use('/docs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs)) 
+
+
 //CONFIGURACION DE LA MUESTRA DE ERRORES DEL SERVIDOR
 app.use((error, req, res, next) => {
     console.log(error.stack)

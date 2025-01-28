@@ -7,10 +7,14 @@ class UsersRepository {
 
     getUsers = async () => {
     const users = await this.dao.get()
+    if (!users || users.length === 0) {
+        return []; // Si no hay usuarios, devuelve un array vacío
+    }
     const usersDto = users.map(user => new UserDto(user));
     return usersDto}
     getUser = async filter => {
-        const user = await this.dao.getBy(filter);
+        console.log(filter)
+        const user = await this.dao.getBy({_id: filter});
         const userDto = new UserDto(user)
         return userDto
 }

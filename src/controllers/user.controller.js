@@ -1,4 +1,4 @@
-const { userService } = require("../services")
+const { userService, cartService } = require("../services")
 
 class UserController {
  constructor () {
@@ -10,7 +10,6 @@ class UserController {
 getUsers = async (req, res) => {
     try {
         const users = await this.service.getUsers()
-
         res.send({
             status: 'success',
             payload: users
@@ -21,8 +20,8 @@ getUsers = async (req, res) => {
 }
 
 getUser = async (req, res) => {
-    const { id } = req.params
-    const user = await this.service.getUser(id)
+    const  {uid}  = req.params
+    const user = await this.service.getUser(uid)
     res.send({status: "success",
               payload: user})
 }
