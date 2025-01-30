@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node src/server.js --mode production",
-    "dev": "node --watch src/server.js"
+    "dev": "node --watch src/server.js",
+    "test": "mocha test/supertest.test.js"
   },
   "keywords": [],
   "author": "",
@@ -30,5 +31,10 @@
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
     "sweetalert2": "^11.12.4"
+  },
+  "devDependencies": {
+    "chai": "^4.5.0",
+    "mocha": "^11.1.0",
+    "supertest": "^7.0.0"
   }
 }

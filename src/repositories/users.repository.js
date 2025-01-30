@@ -13,7 +13,6 @@ class UsersRepository {
     const usersDto = users.map(user => new UserDto(user));
     return usersDto}
     getUser = async filter => {
-        console.log(filter)
         const user = await this.dao.getBy({_id: filter});
         const userDto = new UserDto(user)
         return userDto

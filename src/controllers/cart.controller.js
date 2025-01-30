@@ -28,7 +28,10 @@ getCart = async (req, res) => {
 
 createCart =  async (req, res) => {
     try {
-        const { product, quantity  } = req.body; // Asegúrate de que `quantity` sea un número
+        const { product, quantity  } = req.body; 
+        if (!req.user) {
+            return res.status(401).json({ error: "Usuario no autenticado" });
+        }
         const userId = req.user.cartId
 
         let cart = await this.service.getCart(userId);

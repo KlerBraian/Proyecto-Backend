@@ -79,7 +79,7 @@
 
 
     function deleteProduct(cartId, productId) {
-        fetch(`${cartId}/product/${productId}`, {
+        fetch(`/api/carts/${cartId}/product/${productId}`, {
             method: "DELETE"
         })
             .then(response => response.json())

@@ -24,7 +24,7 @@ router.get('/failogin', async (req, res) => {
 router.post('/login', passport.authenticate('login', {failureRedirect: '/api/sessions/failogin'}), async (req, res) => {
     if(!req.user) return res.status(401).send({status: 'error', error: 'credenciales inválidas'})
 
-     const token = generateToken({id: req.user._id, role: req.user.role })
+     const token = generateToken({id: req.user._id, role: req.user.role, email: req.user.email, cartId: req.user.cartId })
 
 
     res.cookie('token', token, {

@@ -1,7 +1,7 @@
 paths: 
   /api/users/:
     get:
-      summary: Obtiene todos los usuarios
+      summary: Obtiene todos los usuarios filtrados por el dto para ocultar informacion sensible
       tags:
         - Users
       responses:
@@ -47,9 +47,50 @@ paths:
             application/json: 
               schema: 
                 $ref: '#components/schemas/User'
-
+    put:
+      summary: Actualiza un usuario a partir de su id
+      tags:
+        - Users
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          description: id del usuario que vamos a actualizar
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/requestBodies/updateUser"
+      responses:
+        "200":
+          description: El usuario fue actualizado correctamente
+        "400":
+          description: Solicitud incorrecta, la información proporcionada es inválida
+    delete:
+      summary: Elimina un usuario a partir de su id
+      tags:
+        - Users
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          description: id del usuario al que vamos a solicitar
+          schema: 
+            $type: String
+      responses:
+        "200":
+          description: El usuario fue eliminado correctamente
+        "404":
+          description: Usuario no encontrado
+        "500":
+          description: Error interno del servidor, usualmente generado por un fallo en la base de datos
     
 
+
+          
 
 components:
   schemas:
@@ -76,7 +117,6 @@ components:
         first_name: Braian
         last_name: Kler
         email: braiankler@gmail.com 
-        password: $asdf65.asdfasdfasdfasdfasdf3.asdfasdfasdtfa8s7df9asfa%
   requestBodies:
     createUser:
       type: object
@@ -98,3 +138,23 @@ components:
         last_name: Kler
         email: braiankler@gmail.com 
         password: '123456'
+    updateUser:
+      type: object
+      properties:
+        first_name: 
+          type: String
+          description: Nombre del usuario
+        last_name: 
+          type: String
+          description: Apellido del usuario
+        email: 
+          type: String
+          description: Correo electrónico del usuario
+        password: 
+          type: String
+          description: Password del usuario
+      example:
+          first_name: "Juan"
+          last_name: "Pérez"
+          email: "juan.perez@example.com"
+          password: "1234"

@@ -17,7 +17,7 @@ router.get("/", getPage );
 
 router.get("/products/:pid", getProductDetail);
 
-router.get("/api/carts/:cid", getCartDetail);
+router.get("/api/cart/:cid", getCartDetail);
 
 router.get("/api/carts/:cid/purchase",getTicket)
 
