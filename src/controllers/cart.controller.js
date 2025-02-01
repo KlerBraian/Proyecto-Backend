@@ -29,6 +29,7 @@ getCart = async (req, res) => {
 createCart =  async (req, res) => {
     try {
         const { product, quantity  } = req.body; 
+        console.log(req)
         if (!req.user) {
             return res.status(401).json({ error: "Usuario no autenticado" });
         }
@@ -41,7 +42,7 @@ createCart =  async (req, res) => {
             cart = await this.service.createCart({_id: userId, products: [{ product, quantity: parseInt(quantity) }] });
         } else {
             // Actualizar el carrito con el producto
-            cart = await this.service.updateProductCart(cart._id, product, parseInt(quantity));
+            cart = await this.service.updateProductCart(cart._id, product, parseInt(quantity),false);
         }
         req.user.cartId = cart._id
 
@@ -67,7 +68,7 @@ updateCart = async (req, res) => {
 updateProductCart =  async (req, res) => {
     try {
         const { cid, pid } = req.params;
-        const { quantity } = req.body
+        const { quantity} = req.body
         const response = await this.service.updateProductCart(cid, pid, quantity, true);
         res.send({ status: "success", data: response })
     }

@@ -12,7 +12,7 @@ router.get('/failregister', async (req, res) => {
 })
 
 router.post('/register', passport.authenticate('register', {failureRedirect: '/api/sessions/failregister'}), async (req, res) => {
-   res.redirect("/")
+   res.redirect("/login")
 })
 
 

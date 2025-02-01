@@ -1,9 +1,9 @@
 const chai = require("chai");
 const supertest = require("supertest")
 const mongoose = require('mongoose');
-const { UserDaoMongo } = require("../src/daos/Mongo/userDao.mongo");
 const jwt = require('jsonwebtoken');
 const { cartService } = require("../src/services");
+const { generateToken } = require("../src/utils/jwt");
 
 const expect = chai.expect
 const requester = supertest("http://localhost:8080")
@@ -11,24 +11,36 @@ mongoose.connect('mongodb+srv://braiankler30:A0oYf2hBA8XxOuT5@clustercoder.qfkuo
 
 
 describe("Test Cart", () => {
+    beforeEach(async function () {
+        await mongoose.connection.collection("users").drop();
+    });
     let cartId
     describe('testing avanzado de sessions', () => {
-        // let cookie
-        // it('El endpoint POST /api/sessions/register debe registrar correctamente a un usuario', async () => {
-        //     const mockUser = {
-        //         first_name: 'Braian',
-        //         last_name: 'Kler',
-        //         email: 'braiankler@gmail.com',
-        //         password: '123456'
-        //     }
+        let cookie
+        it('El endpoint POST /api/sessions/register debe registrar correctamente a un usuario', async () => {
+            const mockUserRegister = {
+                first_name: 'Braian',
+                last_name: 'Kler',
+                email: 'braiankler@gmail.com',
+                password: '123456'
+            }
 
-        //     const {statusCode, text}  = await requester.post('/api/sessions/register').send(mockUser).redirects(1);  // Seguir la redirección
+            const {statusCode, text}  = await requester.post('/api/sessions/register').send(mockUserRegister).redirects(1);  // Seguir la redirección
 
-        //     expect(statusCode).to.be.oneOf([200, 302]);
-        //     expect(text).to.be.ok;
-        // })
+            expect(statusCode).to.be.oneOf([200, 302]);
+            expect(text).to.be.ok;
+        })
 
         it('El endpoint POST /api/sessions/login debe loguear correctamente al usuario, devolver una cookie y asignarle un carrito', async () => {
+            const mockUserRegister = {
+                first_name: 'Braian',
+                last_name: 'Kler',
+                email: 'braiankler@gmail.com',
+                password: '123456'
+            }
+
+            await requester.post('/api/sessions/register').send(mockUserRegister).redirects(1);  // Seguir la redirección
+
             const mockUser = {
                 email: 'braiankler@gmail.com',
                 password: '123456'
@@ -64,9 +76,8 @@ describe("Test Cart", () => {
     })
 
 
-    describe("Test de carrito", () => {  //EL CREATE ANDA EN LA BASE DE DATOS PERO FALLA EN EL TEST, EL CART POR ID FALLA TODAVIA
-        it("Debe devolver 401 si el usuario no está autenticado", async () => {
-
+    describe("Test de carrito", () => {  // FALTA TESTEAR CUANDO EL CART EXISTE COMO AGREGA EL PRODUCTO
+        it("El endpoint POST /api/carts/ debe devolver 401 si el usuario no está autenticado", async () => {
             const productData = {
                 product: "66d347e99e787c191d2aa3de",
                 quantity: 2
@@ -79,6 +90,26 @@ describe("Test Cart", () => {
             expect(cartRes.body.error).to.equal("Usuario no autenticado");
         });
 
+        // it("Debe agregar un producto al carrito cuando el usuario esté autenticado", async () => { NO FUNCIONA LA SIMULACION DEL LOGIN DE USUARIO
+        //     const userMock =  await cartService.getCart("679abad6ce366702dc11f37b")
+
+        //     console.log (userMock._id.toString())
+
+        //     const productData = {
+        //         product: "66d347e99e787c191d2aa3de", // ID del producto
+        //         quantity: 2
+        //     };
+
+        //     // Simulando una solicitud con el token JWT en el header
+        //     const cartRes = await requester
+        //         .post("/api/carts")
+        //         .set({cartId: userMock._id.toString()})  // Establecemos el token JWT en el header
+        //         .send(productData);
+
+        //     // Verificamos que el producto se haya agregado correctamente
+        //     expect(cartRes.status).to.be.oneOf([200, 302]);
+        //     expect(cartRes.body.error).to.not.equal("Usuario no autenticado");
+        // });
 
 
         it("El endpoint GET /api/carts debe traer correctamente todos los carritos", async () => {
@@ -97,50 +128,65 @@ describe("Test Cart", () => {
         });
 
 
-        // it("El endpoint PUT /api/carts/:cidDebe vaciar un carrito por su ID correctamente", async () => {
-        //     const cartId = "679abad6ce366702dc11f37b";  // ID del carrito que deseas modificar
-        //     const response = await requester.put(`/api/carts/${cartId}`).send([]);  // Enviamos un array vacío para vaciar el carrito
-        //     expect(response.statusCode).to.equal(200);  // El código de estado debería ser 200
-        //     console.log(response.body);  // Muestra la respuesta del servidor
-
-        // });
-
-
-        it("El endpoint PUT /api/carts/:cid/product/:pid debe modificar un producto del carrito por su ID correctamente", async () => {
+        it("El endpoint PUT /api/carts/:cid debe modificar un carrito por su ID correctamente", async () => {
             const cartId = "679abad6ce366702dc11f37b";  // ID del carrito que deseas modificar
-            const productId = "66d8c254927541bd257fffd6" //ID del producto que deseas modificar del carrito seleccionado
-            const newQuantity = 5
-         
-            
-            const response = await requester.put(`/api/carts/${cartId}/product/${productId}`).send({ quantity: newQuantity, setQuantity: true }); // Pasa `setQuantity: true`
-            expect(response.statusCode).to.equal(200);
-            console.log(response.body);
+            const response = await requester.put(`/api/carts/${cartId}`).send([]);  // Enviamos un array vacío para vaciar el carrito
+            expect(response.statusCode).to.equal(200);  // El código de estado debería ser 200
+            console.log(response.body);  // Muestra la respuesta del servidor
 
         });
 
-        // it("Debe vaciar un carrito por su ID correctamente", async () => {
-        //     const cartId = "679abad6ce366702dc11f37b";  // ID del carrito que deseas eliminar
-        //     const response = await requester.delete(`/api/carts/${cartId}`);
-        //     expect(response.statusCode).to.equal(200);
-        //     console.log(response.body); // Aquí se imprime el cuerpo de la respuesta
 
-        // });
+        it("El endpoint PUT /api/carts/:cid/product/:pid debe establecer una cantidad específica de un producto a modificar", async () => {
+            const cartId = "679bbf99827e7b0767e16ff7";  // ID del carrito que deseas modificar
+            const productId = "66d8c254927541bd257fffd6" //ID del producto que deseas modificar del carrito seleccionado
+            const newQuantity = 3 //variar la cantidad para probar mas de una vez
 
-        // it("Debe eliminar un producto del carrito por su ID correctamente", async () => {
-        //     const cartId = "679abad6ce366702dc11f37b";  // ID del carrito que deseas eliminar
-        //     const productId = "66d8c254927541bd257fffd6" //ID del producto que deseas eliminar del carrito seleccionado
-        //     const response = await requester.delete(`/api/carts/${cartId}/product/${productId}`);
-        //     expect(response.statusCode).to.equal(200);
-        //     console.log(response.body); // Aquí se imprime el cuerpo de la respuesta
+            const response = await requester
+                .put(`/api/carts/${cartId}/product/${productId}`)
+                .send({ quantity: newQuantity, setQuantity: true });
 
-        // });
+            expect(response.statusCode).to.equal(200);
+            console.log(response.body)
+            expect(response.body.data.modifiedCount).to.equal(1);
+        });
 
 
+        it("El endpoint PUT /api/carts/:cid/product/:pid debe agregar el producto al carrito si no existe", async () => {
+            const cartId = "679bbf99827e7b0767e16ff7";  // ID del carrito que deseas modificar
+            const newProductId = "66d775e0211b80320a34917f" //ID del producto que deseas modificar del carrito seleccionado
+            const newQuantity = 5
 
+            const response = await requester
+                .put(`/api/carts/${cartId}/product/${newProductId}`)
+                .send({ quantity: newQuantity });
+
+            expect(response.statusCode).to.equal(200);
+            console.log(response.body)
+            expect(response.body.data.modifiedCount).to.equal(1);
+
+        });
+
+
+        it("Debe vaciar un carrito por su ID correctamente", async () => {
+            const cartId = "679abad6ce366702dc11f37b";  // ID del carrito que deseas eliminar
+            const response = await requester.delete(`/api/carts/${cartId}`);
+            expect(response.statusCode).to.equal(200);
+            console.log(response.body); // Aquí se imprime el cuerpo de la respuesta
+
+        });
+
+        it("Debe eliminar un producto del carrito por su ID correctamente", async () => {
+            const cartId = "679abad6ce366702dc11f37b";  // ID del carrito que deseas eliminar
+            const productId = "66d8c254927541bd257fffd6" //ID del producto que deseas eliminar del carrito seleccionado
+            const response = await requester.delete(`/api/carts/${cartId}/product/${productId}`);
+            expect(response.statusCode).to.equal(200);
+            console.log(response.body); // Aquí se imprime el cuerpo de la respuesta
+
+        });
 
     });
 
+});
 
-
-})
 
