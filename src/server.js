@@ -22,7 +22,8 @@ const PORT = configObjet.port
 
 const swaggerJsDoc = require('swagger-jsdoc')
 const swaggerUiExpress = require('swagger-ui-express') 
-const {swaggerOptions} = require ("./config/swagger.DockConfig.js")
+const {swaggerOptions} = require ("./config/swagger.DockConfig.js");
+const { addLogger, logger } = require('./utils/logger.js');
 
 
 //LLAMADO A METODOS DE EXPRESS PARA URL,JSON Y CARPETAS
@@ -32,6 +33,7 @@ app.use(express.static(__dirname + '/public'))
 app.use(express.static(__dirname + '/db'));
 app.use(cookieParser('palabrasecreta'))
 app.use(cors());
+app.use(addLogger)
 // Configuración de express-session
 app.use(session({
     store: MongoStore.create({
@@ -71,7 +73,7 @@ app.use((error, req, res, next) => {
 
 //CREACION DE LA ESCUCHA AL SERVIDOR
 const httpServer = app.listen(PORT, () => {
-    console.log('escuchando en el puerto: ', PORT)
+    logger.info(`escuchando en el puerto: ${PORT}`)
 })
 
 //CREACION DEL SERVER TIPO SOCKET

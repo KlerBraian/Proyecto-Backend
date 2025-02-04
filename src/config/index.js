@@ -1,5 +1,6 @@
 const  dotenv  = require("dotenv");
 const { connect } = require("mongoose");
+const { logger } = require("../utils/logger");
 
 dotenv.config();
 exports.configObjet = {
@@ -9,6 +10,6 @@ exports.configObjet = {
 
 
 exports.connectDb = async () => {
-    console.log("Base de datos conectada");
+    logger.info("Base de datos conectada");
     await connect(process.env.MONGO_URL)
 }

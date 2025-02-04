@@ -1,13 +1,14 @@
 const { Router } = require('express')
 const passport = require('passport')
 const { generateToken } = require('../../utils/jwt')
+const { logger } = require('../../utils/logger')
 
 const router = Router()
 
 
 
 router.get('/failregister', async (req, res) => {
-    console.log('fallo la estragia')
+    logger.fatal('fallo la estragia')
     res.send({status: 'error', error: 'fallo estrategia'})
 })
 
@@ -17,7 +18,7 @@ router.post('/register', passport.authenticate('register', {failureRedirect: '/a
 
 
 router.get('/failogin', async (req, res) => {
-    console.log('fallo la estragia')
+    logger.fatal('fallo la estragia')
     res.send({status: 'error', error: 'fallo el login'})
 })
 
