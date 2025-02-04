@@ -31,7 +31,7 @@ router.post('/login', passport.authenticate('login', {failureRedirect: '/api/ses
         maxAge:1000 *60* 60 *24,
         httpOnly: true
     })
-        .redirect("/")
+    res.send({status: "success" , data: token });
 })
 
 

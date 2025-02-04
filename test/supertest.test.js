@@ -25,7 +25,7 @@ describe("Test Cart", () => {
                 password: '123456'
             }
 
-            const {statusCode, text}  = await requester.post('/api/sessions/register').send(mockUserRegister).redirects(1);  // Seguir la redirección
+            const { statusCode, text } = await requester.post('/api/sessions/register').send(mockUserRegister).redirects(1);  // Seguir la redirección
 
             expect(statusCode).to.be.oneOf([200, 302]);
             expect(text).to.be.ok;
@@ -76,7 +76,7 @@ describe("Test Cart", () => {
     })
 
 
-    describe("Test de carrito", () => {  // FALTA TESTEAR CUANDO EL CART EXISTE COMO AGREGA EL PRODUCTO
+    describe("Test de carrito", () => {  
         it("El endpoint POST /api/carts/ debe devolver 401 si el usuario no está autenticado", async () => {
             const productData = {
                 product: "66d347e99e787c191d2aa3de",
@@ -90,26 +90,47 @@ describe("Test Cart", () => {
             expect(cartRes.body.error).to.equal("Usuario no autenticado");
         });
 
-        // it("Debe agregar un producto al carrito cuando el usuario esté autenticado", async () => { NO FUNCIONA LA SIMULACION DEL LOGIN DE USUARIO
-        //     const userMock =  await cartService.getCart("679abad6ce366702dc11f37b")
+        // it("Debe agregar un producto al carrito cuando el usuario esté autenticado", async () => {
+        //     const mockUserRegister = {
+        //         first_name: 'Braian',
+        //         last_name: 'Kler',
+        //         email: 'braiankler@gmail.com',
+        //         password: '123456'
+        //     }
 
-        //     console.log (userMock._id.toString())
+        //     await requester.post('/api/sessions/register').send(mockUserRegister).redirects(1);  // Seguir la redirección
 
+        //     const mockUser = {
+        //         email: 'braiankler@gmail.com',
+        //         password: '123456'
+        //     };
+
+        //     // 🔹 Login y obtención de la cookie
+        //     const result = await requester.post('/api/sessions/login').send(mockUser);
+
+        //     // Obtener la cookie de autenticación
+        //     const cookieResult = result.headers['set-cookie'][0];
+
+        //     const cookie = {
+        //         name: cookieResult.split('=')[0],
+        //         value: cookieResult.split('=')[1].split(';')[0]
+        //     };
+
+        //     // 🔹 Agregar un producto al carrito
         //     const productData = {
-        //         product: "66d347e99e787c191d2aa3de", // ID del producto
+        //         product: "66d347e99e787c191d2aa3de",
         //         quantity: 2
         //     };
 
-        //     // Simulando una solicitud con el token JWT en el header
         //     const cartRes = await requester
         //         .post("/api/carts")
-        //         .set({cartId: userMock._id.toString()})  // Establecemos el token JWT en el header
+        //         .set("Cookie", `${cookie.name}=${cookie.value}`)
         //         .send(productData);
 
-        //     // Verificamos que el producto se haya agregado correctamente
+        //     // 🔹 Verificar respuesta
         //     expect(cartRes.status).to.be.oneOf([200, 302]);
         //     expect(cartRes.body.error).to.not.equal("Usuario no autenticado");
-        // });
+        // })
 
 
         it("El endpoint GET /api/carts debe traer correctamente todos los carritos", async () => {

@@ -1,11 +1,34 @@
 <main>
     <div class="login-container">
         <h1 class="login-tittle">Login</h1>
-        <form action="/api/sessions/login" method="POST" class="form-group w-50 form-register">
-            <input type="text" name="email" class="form-control" placeholder="ingrese el email">
-            <input type="text" name="password" class="form-control" placeholder="ingrese el pass">
-            <button class="submit">Enviar</button><br>
+        <form class="form-group w-50 form-register">
+            <input type="text" id="email" class="form-control" placeholder="ingrese el email">
+            <input type="text" id="password" class="form-control" placeholder="ingrese el pass">
+            <button onclick="login(event)" class="submit">Enviar</button><br>
             <p>No tengo cuenta: <a class="link" href="/register">Crear cuenta</a><br>    </p>    
         </form>
     </div>
 </main>
+<script>
+    async function login(event) {
+       event.preventDefault(); // Evita que el formulario haga la recarga por defecto
+
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        console.log(email,password)
+
+        const response = await fetch(`/api/sessions/login`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email, password }),
+        });
+
+        if (response.ok) {
+            window.location.href = "/"; // Redirige a la página de inicio
+        } else {
+            alert("Error en el login. Verifica tus credenciales."); // Muestra un mensaje de error
+        }
+    };
+</script>

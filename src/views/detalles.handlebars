@@ -14,13 +14,14 @@
 
 
         {{#if cartId}}
-        <form action="/api/carts" method="POST" class="agregar-al-carrito-form">
-            <input type="hidden" name="product" value="{{product._id}}">
+        <form class="agregar-al-carrito-form">
+            <input type="hidden" id="product" name="product" value="{{product._id}}">
             <label for="quantity">Cantidad:</label>
             <input type="number" name="quantity" id="quantity" min="1" value="1" required>
-            <button onclick="addProduct()" id="agregar"type="submit" class="boton-agregar">Agregar al carrito</button>
+            <button onclick="addProduct(event)" id="agregar" type="submit" class="boton-agregar">Agregar al
+                carrito</button>
         </form>
-           {{else}}
+        {{else}}
         <p>Debe loguearse para comprar</p>
         {{/if}}
     </div>
@@ -28,12 +29,33 @@
 
 <script src=" https://cdn.jsdelivr.net/npm/sweetalert2@11.7.1/dist/sweetalert2.all.min.js "></script>
 <script>
-    function addProduct(){
-         Swal.fire({
-            title: 'Producto agregado',
-            icon: 'success',
-            timer: 2000,  
-            showConfirmButton: false  // Opcional, oculta el botón de "Aceptar"
+    async function addProduct(event) {
+        event.preventDefault(); // Evita que el formulario haga la recarga por defecto
+
+        const product = document.getElementById("product").value;
+        const quantity = document.getElementById("quantity").value;
+        console.log(product, quantity)
+
+        const response = await fetch(`/api/carts`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ product, quantity }),
         });
-    }
+
+        if (response.ok) {
+            Swal.fire({
+                title: 'Producto agregado',
+                icon: 'success',
+                timer: 2000,
+                showConfirmButton: false  // Opcional, oculta el botón de "Aceptar"
+            });
+            setTimeout(() => {
+                window.location.href = "/"; // Redirige después de la alerta
+            }, 1000);
+        } else {
+            alert("Error en el login. Verifica tus credenciales."); // Muestra un mensaje de error
+        }
+    };
 </script>

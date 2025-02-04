@@ -16,7 +16,6 @@ class CartDaoMongo {
 
 
     updateProductCart = async (cartId, productId, quantity, setQuantity) => {
-        console.log(setQuantity)
         const cart = await this.model.findOne({ _id: cartId, "products.product": productId });
 
         if (cart) {

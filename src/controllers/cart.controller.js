@@ -29,7 +29,6 @@ getCart = async (req, res) => {
 createCart =  async (req, res) => {
     try {
         const { product, quantity  } = req.body; 
-        console.log(req)
         if (!req.user) {
             return res.status(401).json({ error: "Usuario no autenticado" });
         }
@@ -46,7 +45,7 @@ createCart =  async (req, res) => {
         }
         req.user.cartId = cart._id
 
-        res.redirect("/")
+        res.send({status: "success", data: cart})
     } catch (error) {
         console.log(error);
         res.status(500).send("Error al manejar el carrito");
@@ -110,22 +109,21 @@ purchaseCart = async (req,res) => {
 
         cart.products.forEach((cartProduct) => {
             const { product, quantity } = cartProduct;
-            // Verificamos si hay suficiente stock
             if (quantity <= product.stock) {
-                disponibles.push(cartProduct); // Si hay stock suficiente
+                disponibles.push(cartProduct); 
                 productService.updateProduct(product._id,{stock: product.stock - quantity});
                 this.service.deleteProductCart(cid,product._id)
             } else {
-                noDisponibles.push(cartProduct); // Si no hay stock suficiente
+                noDisponibles.push(cartProduct); 
             }
         });
  
         const productsSubtotal = disponibles.map(product => ({
             ...product,
-            subtotal: product.quantity * product.product.price // Calcula subtotal por producto
+            subtotal: product.quantity * product.product.price 
         }));
 
-        // Calcular subtotal total
+     
         const amount = productsSubtotal.reduce((total, product) => total + product.subtotal, 0);
         
          const newTicket = {
