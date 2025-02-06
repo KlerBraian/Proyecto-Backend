@@ -15,7 +15,7 @@
 
         const email = document.getElementById("email").value;
         const password = document.getElementById("password").value;
-        console.log(email,password)
+     
 
         const response = await fetch(`/api/sessions/login`, {
             method: "POST",
@@ -25,10 +25,11 @@
             body: JSON.stringify({ email, password }),
         });
 
-        if (response.ok) {
+        if (response.status === 200) {
             window.location.href = "/"; // Redirige a la página de inicio
         } else {
-            alert("Error en el login. Verifica tus credenciales."); // Muestra un mensaje de error
+        
+                alert("Error en el login. Verifica tus credenciales.");
         }
     };
 </script>

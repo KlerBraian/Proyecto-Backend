@@ -75,7 +75,6 @@ const initializePassport = () => {
           
     
             if (user.cartId) {
-                console.log(user.cartId)
                   let cart = await cartMongo.getBy({_id: user.cartId});
                   if (!cart) {
                     newCart = await cartMongo.create({_id : user.cartId})

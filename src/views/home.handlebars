@@ -8,10 +8,11 @@
         <label class="label-user">Usuario actual:</label>
         <p class="user">{{user}}</p>
     </div>
-    <div> 
-        <button>
-            <a href="/login">Cambiar cuenta/Crear cuenta</a>
-        </button></div>
+    <div>
+        <form>
+           <button class="logout" onclick="cambiarCuenta(event)">Cambiar cuenta/Crear cuenta</button>
+        </form>
+    </div>
     <div>
         <form action="/api/sessions/logout" method="POST">
             <button class="logout" type="submit">Logout</button>
@@ -79,6 +80,22 @@
     <p>No hay productos disponibles.</p>
     {{/if}}
 </div>
-</body>
+<script>
+const cambiarCuenta = async (event) => {
+    event.preventDefault(); 
 
-</html>
+    try {
+        const response = await fetch("/api/sessions/logout", {
+            method: "POST",
+        });
+
+        if (response.ok) {
+            window.location.href = "/login"; 
+        } else {
+            console.error("Error al cerrar sesión");
+        }
+    } catch (error) {
+        console.error("Hubo un problema con la petición:", error);
+    }
+};
+</script>
