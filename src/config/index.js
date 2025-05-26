@@ -10,6 +10,11 @@ exports.configObjet = {
 
 
 exports.connectDb = async () => {
-    logger.info("Base de datos conectada");
-    await connect(process.env.MONGO_URL)
-}
+  try {
+    await connect(process.env.MONGO_URL);
+    logger.info("✅ Base de datos conectada");
+  } catch (error) {
+    logger.error("❌ Error al conectar la base de datos:", error);
+    throw error; 
+  }
+};

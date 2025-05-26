@@ -37,7 +37,7 @@ app.use(addLogger)
 // Configuración de express-session
 app.use(session({
     store: MongoStore.create({
-        mongoUrl: "mongodb+srv://braiankler30:A0oYf2hBA8XxOuT5@clustercoder.qfkuo.mongodb.net/products?retryWrites=true&w=majority&appName=ClusterCoder/",
+        mongoUrl: process.env.MONGO_URL,
         ttl: 100000
     }),
     secret: 'secretcoder',
