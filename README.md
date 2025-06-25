@@ -9,7 +9,7 @@
     ```npm install```
 3. Iniciar la aplicación:
     ```npm run dev```
-4. Peticiones con Postman:
+4. Peticiones:
    1. **Metodo Get:** Obtener productos de la base de datos(en este caso local) ```http://localhost:8080/api/products```
    2. **Metodo Get:** Obtener un producto especificado por id de la base de datos(en este caso local) ```http://localhost:8080/api/:pid```
    3. **Metodo Post:** Agregar productos a la base de datos(en este caso local) ```http://localhost:8080/api/products``` 
@@ -23,7 +23,7 @@
  Ejemplo de formato Json de peticion : {"quant": 20}
    
 ## Imagen Docker Link
-  **http://localhost:8081/**
+  **Proximamente**
 
 
 ## Autor
