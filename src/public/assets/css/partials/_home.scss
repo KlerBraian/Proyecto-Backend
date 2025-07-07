@@ -53,17 +53,29 @@ button:hover {
 }
 
 .productos-grilla {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 2.5rem;
-    margin: 1rem
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  justify-items: center;
+  gap: 2rem;
+  margin: 1rem auto;
+  width: 100%;
+  max-width: 1200px;
+  gap: 4rem;
 }
 
 .producto {
-    text-align: center;
-    background-color: rgb(224, 176, 104);
-    padding: 1rem;
-    border-radius: 1rem;
+   display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between; /* distribuye contenido sin dejar huecos grandes */
+  padding: 1rem;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  height: 100%; /* Para que todas las tarjetas midan igual dentro del grid */
+  max-height: 450px; /* puedes ajustar según necesidad */
+  width: 100%;
+  max-width: 350px;
 }
 
 .cart-producto {
@@ -162,7 +174,7 @@ button:hover {
 
 .session {
     display: flex;
-    flex-direction: column;
+    justify-content: start;
     gap: 0.5rem;
 }
 
@@ -179,6 +191,7 @@ button:hover {
 }
 
 .container {
+    margin-inline: 00px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -190,3 +203,4 @@ button:hover {
     justify-content: center;
     gap: 1rem
 }
+

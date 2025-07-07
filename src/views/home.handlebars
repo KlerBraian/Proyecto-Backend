@@ -2,100 +2,101 @@
 
 <h1 class="titulo">Tienda Kler Backend</h1>
 <h2 class="titulo">Productos</h2>
-<div class="session">
-    {{#if isLoggedIn}}
-    <div>
-        <label class="label-user">Usuario actual:</label>
-        <p class="user">{{user}}</p>
-    </div>
-    <div>
-        <form>
-           <button class="logout" onclick="cambiarCuenta(event)">Cambiar cuenta/Crear cuenta</button>
-        </form>
-    </div>
-    <div>
-        <form action="/api/sessions/logout" method="POST">
-            <button class="logout" type="submit">Logout</button>
-        </form>
-    </div>
-    {{else}}
-    <button>
-        <a href="/login">Loguearse/Crear cuenta</a>
-    </button>
-
-    {{/if}}
-</div>
-{{#if isAdmin}}
-<div class="options">
-    <button class="create-products">
-        <a href="/createProducts">Portal vendedor</a>
-    </button>
-    {{/if}}
-
-    {{#if cartId }}
-    <button class="cart">
-        <a href="/api/cart/{{cartId}}">Carrito 🛒</a>
-    </button>
-    {{/if}}
-</div>
-
-<div class="container">
-    {{#if products.length}}
-    <div class="productos-grilla">
-        {{#each products}}
-        <div class="producto">
-            {{#if @root.isAdmin}}
-            <p class="producto-tilte">Code:{{this.code}}</p>
-            {{/if}}
-            <h3 class="producto-title">{{this.title}}</h3>
-            <img class="producto-img" src="{{this.thumbnail}}" alt="">
-            <p class="producto-price">Precio: ${{this.price}}</p>
-            <p class="producto-categoria">Categoría: {{this.category}}</p>
-            <p class="producto-description">Descripción: {{this.description}}</p>
-            <p class="producto-stock">Unidades disponibles: {{this.stock}}</p>
-            <button class="options detail"> <a href="/products/{{_id}}" class="producto-detalles">Ver
-                    detalles</a></button>
-
+    <div class="session">
+        {{#if isLoggedIn}}
+        <div>
+            <label class="label-user">Usuario actual:</label>
+            <p class="user">{{user}}</p>
         </div>
-        {{/each}}
-    </div>
+        <div>
+            <form>
+                <button class="logout" onclick="cambiarCuenta(event)">Cambiar cuenta/Crear cuenta</button>
+            </form>
+        </div>
+        <div>
+            <form action="/api/sessions/logout" method="POST">
+                <button class="logout" type="submit">Logout</button>
+            </form>
+        </div>
+        {{else}}
+        <button>
+            <a href="/login">Loguearse/Crear cuenta</a>
+        </button>
 
-    <!-- Paginación -->
-    <div class="pagination">
-        {{#if hasPrevPage}}
-        <button class="options pages"> <a class="prev"
-                href="/?limit={{limit}}&page={{prevPage}}&query={{query}}&sort={{sort}}">Página Anterior</a>
+        {{/if}}
+    </div>
+    {{#if isAdmin}}
+    <div class="options">
+        <button class="create-products">
+            <a href="/createProducts">Portal vendedor</a>
         </button>
         {{/if}}
 
-        {{#if hasNextPage}}
-        <button class="options pages">
-            <a class="next" href="/?limit={{limit}}&page={{nextPage}}&query={{query}}&sort={{sort}}">Página
-                Siguiente</a>
+        {{#if cartId }}
+        <button class="cart">
+            <a href="/api/cart/{{cartId}}">Carrito 🛒</a>
         </button>
         {{/if}}
-        <p class="page">Página {{currentPage}} de {{totalPages}}</p>
     </div>
-    {{else}}
-    <p>No hay productos disponibles.</p>
-    {{/if}}
-</div>
+
+    <div class="container">
+        {{#if products.length}}
+        <div class="productos-grilla">
+            {{#each products}}
+            <div class="producto">
+                {{#if @root.isAdmin}}
+                <p class="producto-tilte">Code:{{this.code}}</p>
+                {{/if}}
+                <h3 class="producto-title">{{this.title}}</h3>
+                <img class="producto-img" src="{{this.thumbnail}}" alt="">
+                <p class="producto-price">Precio: ${{this.price}}</p>
+                <p class="producto-categoria">Categoría: {{this.category}}</p>
+                <p class="producto-description">Descripción: {{this.description}}</p>
+                <p class="producto-stock">Unidades disponibles: {{this.stock}}</p>
+                <button class="options detail"> <a href="/products/{{_id}}" class="producto-detalles">Ver
+                        detalles</a></button>
+
+            </div>
+            {{/each}}
+        </div>
+
+        <!-- Paginación -->
+        <div class="pagination">
+            {{#if hasPrevPage}}
+            <button class="options pages"> <a class="prev"
+                    href="/?limit={{limit}}&page={{prevPage}}&query={{query}}&sort={{sort}}">Página Anterior</a>
+            </button>
+            {{/if}}
+
+            {{#if hasNextPage}}
+            <button class="options pages">
+                <a class="next" href="/?limit={{limit}}&page={{nextPage}}&query={{query}}&sort={{sort}}">Página
+                    Siguiente</a>
+            </button>
+            {{/if}}
+            <p class="page">Página {{currentPage}} de {{totalPages}}</p>
+        </div>
+        {{else}}
+        <p>No hay productos disponibles.</p>
+        {{/if}}
+    </div>
+
 <script>
-const cambiarCuenta = async (event) => {
-    event.preventDefault(); 
+    const cambiarCuenta = async (event) => {
+        event.preventDefault();
 
-    try {
-        const response = await fetch("/api/sessions/logout", {
-            method: "POST",
-        });
+        try {
+            const response = await fetch("/api/sessions/logout", {
+                method: "POST",
+            });
 
-        if (response.ok) {
-            window.location.href = "/login"; 
-        } else {
-            console.error("Error al cerrar sesión");
+            if (response.ok) {
+                window.location.href = "/login";
+            } else {
+                console.error("Error al cerrar sesión");
+            }
+        } catch (error) {
+            console.error("Hubo un problema con la petición:", error);
         }
-    } catch (error) {
-        console.error("Hubo un problema con la petición:", error);
-    }
-};
+    };
 </script>

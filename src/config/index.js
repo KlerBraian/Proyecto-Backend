@@ -5,7 +5,9 @@ const { logger } = require("../utils/logger");
 dotenv.config();
 exports.configObjet = {
     port: process.env.PORT || 8080,
-    private_key : process.env.PRIVATE_KEY
+    private_key : process.env.PRIVATE_KEY,
+    gmail_user : process.env.GMAIL_USER,
+    gmail_pass : process.env.GMAIL_PASS
 }
 
 

@@ -1,5 +1,6 @@
 const { cartService, ticketService, productService } = require("../services");
 const { logger } = require("../utils/logger");
+const { sendEmail } = require("../utils/mailer");
 
 
 class CartController {
@@ -158,6 +159,7 @@ class CartController {
 
             const ticket = await ticketService.createTicket(newTicket)
             req.session.ticketId = ticket._id;
+            await sendEmail(user, prodComprados)
 
             res.redirect(`/api/carts/${cid}/purchase`);
         } catch (error) {
