@@ -1,5 +1,26 @@
 # Proyecto de Backend.js 
  Proyecto desarrollado en express.js
+
+## Herramientas Utilizadas
+
+1. **Express.js**: Para construir la esctructura del servidor.
+2. **Router**: Para gestionar la navegación y las rutas de la aplicación.
+3. **Handlebars**: Para gestionar las vistas.
+4. **SCSS**: Para el estilo y diseño de la aplicación.
+5. **JSON**: Para la gestión de los datos de productos y categorías.
+6. **MONGODB**: Para el almacenamiento de datos, registro y autenticación de usuarios.
+7. **JavaScript**: Para la lógica de la aplicación.
+8. **Passport y JWT**: Modulo para manejar la logica de registro y autenticacion.
+9. **Logger**: Modulos para el manejo de mensajes e informacion del servidor.
+10. **Swagger,**: Documentacion del proyecto.
+11. **Patrones dao y dto, repository, factory, services**: Patrones para manejar la logica de la base de datos
+12. **.Env**: Para el manejo de informacion sensible.
+13. **Supertest, Mocha, Chai, Faker**: Para hacer pruebas del proyecto.
+14. **Docker**: Para instanciar una imagen del proyecto para otros sistemas operativos.
+15. **Bcrypt**: Para el hasheo de claves del usuario.
+
+
+ 
 ## Instalación
 
 1. Clonar el repositorio:
@@ -9,7 +30,7 @@
     ```npm install```
 3. Iniciar la aplicación:
     ```npm run dev```
-4. Peticiones con Postman:
+4. Peticiones:
    1. **Metodo Get:** Obtener productos de la base de datos(en este caso local) ```http://localhost:8080/api/products```
    2. **Metodo Get:** Obtener un producto especificado por id de la base de datos(en este caso local) ```http://localhost:8080/api/:pid```
    3. **Metodo Post:** Agregar productos a la base de datos(en este caso local) ```http://localhost:8080/api/products``` 
@@ -23,7 +44,7 @@
  Ejemplo de formato Json de peticion : {"quant": 20}
    
 ## Imagen Docker Link
-  **http://localhost:8081/**
+  **Proximamente**
 
 
 ## Autor
